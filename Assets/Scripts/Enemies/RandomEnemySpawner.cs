@@ -11,7 +11,7 @@ public class RandomEnemySpawner : MonoBehaviour
 {
     [Header("Spawn behaviour")]
     public SpawnType spawnType;
-    public Vector3 spawnRange;
+    public float distanceFromPlayer;
     public bool parent;
 
     [Header("Spawn rate data")]
@@ -64,7 +64,7 @@ public class RandomEnemySpawner : MonoBehaviour
     private GameObject InstantiateEnemy()
     {
         GameObject ret = Instantiate(toSpawn[Random.Range(0, toSpawn.Length)],
-            new Vector3(Random.Range(-spawnRange.x, spawnRange.x), Random.Range(-spawnRange.y, spawnRange.y), Random.Range(-spawnRange.z, spawnRange.z)),
+            new Vector3(Random.Range(-1, 1), Random.Range(-1, 1), Random.Range(-1, 1)).normalized * distanceFromPlayer,
             Quaternion.Euler(Vector3.zero));        
 
         if (parent)

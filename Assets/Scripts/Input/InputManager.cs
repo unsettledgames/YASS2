@@ -11,7 +11,8 @@ public class InputManager : MonoBehaviour
 
     [Header("Input state")]
     public bool shootState;
-    public Vector3 mousePosition;
+    public Vector3 relativeMousePosition;
+    public Vector3 globalMousePosition;
 
     public float accelerationAmount;
     public float torqueAmount;
@@ -36,7 +37,7 @@ public class InputManager : MonoBehaviour
         Instance = this;
 
         shootState = false;
-        mousePosition = Vector3.zero;
+        relativeMousePosition = Vector3.zero;
 
         torqueAmount = 0;
         accelerationAmount = 0;
@@ -57,16 +58,14 @@ public class InputManager : MonoBehaviour
         accelerationAmount = Input.GetAxis("Acceleration");
         torqueAmount = Input.GetAxis("Torque");
 
-        shootState = Input.GetButtonDown("Fire1");
+        shootState = Input.GetButton("Fire1");
+
+        globalMousePosition = Input.mousePosition;
 
         // Getting mouse position relatively to camera
-        mousePosition.x = (Input.mousePosition.x - screenCenter.x) / screenCenter.x;
-        mousePosition.y = (Input.mousePosition.y - screenCenter.y) / screenCenter.y;
-        /*
-        mousePosition = Input.mousePosition;
-        mousePosition.z = mouseZPosition;
-        mousePosition = FrequentlyAccessed.Instance.cameraComponent.ScreenToWorldPoint(mousePosition);
-        */
+        relativeMousePosition.x = (Input.mousePosition.x - screenCenter.x) / screenCenter.x;
+        relativeMousePosition.y = (Input.mousePosition.y - screenCenter.y) / screenCenter.y;
+
 
         DodgeInput();
     }

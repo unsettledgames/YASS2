@@ -12,14 +12,15 @@ public class AsteroidAI : SpawnedEnemy
     {
         Rigidbody physics = GetComponent<Rigidbody>();
 
+
         physics.velocity = new Vector3(
-            Random.Range(0, 1),
-            Random.Range(0, 1),
-            Random.Range(0, 1)).normalized * maxVelocityMagnitude;
+            Random.Range(-1f, 1f),
+            Random.Range(-1f, 1f),
+            Random.Range(-1f, 1f)).normalized * maxVelocityMagnitude;
 
         physics.angularVelocity = new Vector3(
-            Random.Range(0, 1),
-            Random.Range(0, 1),
-            Random.Range(0, 1)).normalized * maxRotationMagnitude;
+            Random.Range(-1f, 1f),
+            Random.Range(-1f, 1f),
+            Random.Range(-1f, 1f)).normalized * maxRotationMagnitude;
     }
 }

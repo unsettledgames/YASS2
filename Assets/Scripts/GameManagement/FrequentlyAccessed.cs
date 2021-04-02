@@ -9,6 +9,9 @@ public class FrequentlyAccessed : MonoBehaviour
     public GameObject cameraObject;
     public Camera cameraComponent;
 
+    public GameObject player;
+    public PlayerShipController playerController;
+
     private void Awake()
     {
         Instance = this;
@@ -17,6 +20,7 @@ public class FrequentlyAccessed : MonoBehaviour
     void Start()
     {
         cameraComponent = cameraObject.GetComponent<Camera>();
+        playerController = player.GetComponent<PlayerShipController>();
     }
 
     // Update is called once per frame

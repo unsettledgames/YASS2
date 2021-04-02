@@ -22,9 +22,10 @@ public class PlayerShipController : MonoBehaviour
     [Header("Tweening")]
     public float turnTween;
     public float accelerationTween;
-    
 
-    [Header("Projectiles")]
+
+    [Header("Shooting management")]
+    public float shootRate = 0.15f;
     public GameObject standardBullet;
     public GameObject missile;
 
@@ -38,11 +39,8 @@ public class PlayerShipController : MonoBehaviour
     private bool isDodging = false;
     private bool externallyControlled = false;
 
-    private Vector3 currentVelocity;
-    private Quaternion currentRotation;
-
-    private Vector3 prevVelocity;
-    private Vector3 prevLookAt;
+    // Shooting stuff
+    private float nextShootTime;
     
 
     // Start is called before the first frame update
@@ -50,10 +48,7 @@ public class PlayerShipController : MonoBehaviour
     {
         physics = GetComponent<Rigidbody>();
 
-        prevLookAt = transform.position + Vector3.forward * InputManager.Instance.mouseZPosition;
-        prevVelocity = Vector3.zero;
-
-        currentRotation = transform.rotation;
+        nextShootTime = Time.time + shootRate;
     }
 
     // Update is called once per frame
@@ -66,8 +61,6 @@ public class PlayerShipController : MonoBehaviour
 
             ShootManagement();
         }
-
-        prevVelocity = physics.velocity;
     }
 
     private void VelocityManagement()
@@ -77,16 +70,29 @@ public class PlayerShipController : MonoBehaviour
 
     private void ShootManagement()
     {
-        if (InputManager.Instance.shootState)
+        Vector3 mouseWorldPos = FrequentlyAccessed.Instance.cameraComponent.ScreenToWorldPoint(InputManager.Instance.globalMousePosition);
+        RaycastHit aimHit;
+        bool hitObject = Physics.Raycast(transform.position, mouseWorldPos - transform.position, out aimHit, Mathf.Infinity, ~(1 << 8));
+
+        Debug.DrawRay(transform.position, mouseWorldPos - transform.position);
+
+        if (hitObject)
+        {
+            Debug.Log("Hit: " + aimHit.collider.name);
+        }
+
+        if (InputManager.Instance.shootState && Time.time >= nextShootTime)
         {
             Instantiate(standardBullet, standardShootSpawns[0].transform.position, Quaternion.Euler(transform.localEulerAngles));
             Instantiate(standardBullet, standardShootSpawns[1].transform.position, Quaternion.Euler(transform.localEulerAngles));
+
+            nextShootTime = Time.time + shootRate;
         }
     }
 
     private void PointTowardsMouse()
     {
-        Vector3 mousePosition = InputManager.Instance.mousePosition;
+        Vector3 mousePosition = InputManager.Instance.relativeMousePosition;
 
         // Setting the new rotation 
         transform.rotation *= Quaternion.Euler(
@@ -100,8 +106,6 @@ public class PlayerShipController : MonoBehaviour
             Mathf.Lerp(0, 30, Mathf.Abs(mousePosition.y)) * -Mathf.Sign(mousePosition.y), 0, 
             Mathf.Lerp(0, 60, Mathf.Abs(mousePosition.x)) * -Mathf.Sign(mousePosition.x)
         );
-
-        prevLookAt = mousePosition - transform.position;
     }
 
     public void SetVelocity(Vector3 toSet)
