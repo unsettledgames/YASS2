@@ -23,7 +23,12 @@ public class DamageGiver : MonoBehaviour
     {
         if (isPlayer)
         {
-            other.GetComponent<EnemyHealthManager>().GiveDamage(damage);
+            EnemyHealthManager ehm = other.GetComponent<EnemyHealthManager>();
+            
+            if (ehm != null)
+                ehm.GiveDamage(damage);
+
+            Destroy(this.gameObject);
         }
     }
 }
