@@ -2,6 +2,8 @@
 #
 # Get latest from https://github.com/github/gitignore/blob/master/Unity.gitignore
 #
+Assets/Models/Julai_models
+Assets/Models/BreakableAsteroids/Asteroids/zasteroids.dae
 /[Ll]ibrary/
 /[Tt]emp/
 /[Oo]bj/
