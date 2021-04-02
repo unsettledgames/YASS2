@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyHealthManager : MonoBehaviour
+public class EnemyHealthManager : OptimizedMonoBehaviour
 {
     public float maxHealth;
     [Header("Death explosion")]
@@ -18,16 +18,19 @@ public class EnemyHealthManager : MonoBehaviour
 
     public void Die()
     {
-        if (canFracture)
-            GetComponent<Fracture>().FractureObject();
+        if (!isQuitting)
+        {
+            if (canFracture)
+                GetComponent<Fracture>().FractureObject();
 
-        if (deathExplosion != null)
-            Instantiate(deathExplosion, transform.position, Quaternion.Euler(
-                new Vector3(Random.Range(0, 360), 
-                Random.Range(0, 360), 
-                Random.Range(0, 360)
-                ))
-        ).GetComponent<Detonator>().Explode();
+            if (deathExplosion != null)
+                Instantiate(deathExplosion, transform.position, Quaternion.Euler(
+                    new Vector3(Random.Range(0, 360),
+                    Random.Range(0, 360),
+                    Random.Range(0, 360)
+                    ))
+            ).GetComponent<Detonator>().Explode();
+        }
     }
 
     public void GiveDamage(float damage)

@@ -6,6 +6,13 @@ using UnityEngine;
 
 public class OptimizedMonoBehaviour : MonoBehaviour
 {
+    protected bool isQuitting = false;
+
+    private void OnApplicationQuit()
+    {
+        isQuitting = true;    
+    }
+
     void OnDestroy()
     {
         foreach (FieldInfo field in GetType().GetFields(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance))

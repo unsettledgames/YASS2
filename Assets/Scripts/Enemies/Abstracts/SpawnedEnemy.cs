@@ -1,8 +1,9 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SpawnedEnemy : MonoBehaviour
+public class SpawnedEnemy : OptimizedMonoBehaviour
 {
     private RandomEnemySpawner enemySpawner;
     private int spawnerIndex;
@@ -15,6 +16,16 @@ public class SpawnedEnemy : MonoBehaviour
 
     private void OnDestroy()
     {
-        enemySpawner.Destroyed(spawnerIndex);
+        if (!isQuitting)
+        {
+            try
+            {
+                enemySpawner.Destroyed(spawnerIndex);
+            }
+            catch (ArgumentOutOfRangeException e)
+            {
+                Debug.Log("Wrong index " + spawnerIndex);
+            }
+        }
     }
 }

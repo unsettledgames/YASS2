@@ -1,0 +1,111 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!21 &2100000
+Material:
+  serializedVersion: 6
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: ProceduralPlanet 3
+  m_Shader: {fileID: 4800000, guid: 430cdb23723644bf0a724c74fc838372, type: 3}
+  m_ShaderKeywords: 
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _BumpTexture1:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _MainTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Noise1:
+        m_Texture: {fileID: 2800000, guid: 52859df90a10242c6a8473526b45b64e, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Noise1Tex:
+        m_Texture: {fileID: 2800000, guid: 06730383a276c4b28adb4f848b64b838, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Noise2:
+        m_Texture: {fileID: 2800000, guid: cb666a4e8bc8b4115af2f1c475280f8d, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Noise2Tex:
+        m_Texture: {fileID: 2800000, guid: 52859df90a10242c6a8473526b45b64e, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _NoiseBump:
+        m_Texture: {fileID: 2800000, guid: c9a1a6598bafbd54f8b17c7245354ea4, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _NoiseTexture:
+        m_Texture: {fileID: 2800000, guid: 27b9e5b38571f3746a2d9392b6ba9fe9, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _NoiseTexture1:
+        m_Texture: {fileID: 2800000, guid: 52859df90a10242c6a8473526b45b64e, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _NoiseTexture2:
+        m_Texture: {fileID: 2800000, guid: 419e17f06e78a463da54f81dbf883f28, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Ramp:
+        m_Texture: {fileID: 2800000, guid: b011c130bd7214d6b9b96ec046f428ff, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _RampTexture:
+        m_Texture: {fileID: 2800000, guid: 5f2ea7bde007c46bdb24742af9c89d8e, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _VolumeTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - permTexture:
+        m_Texture: {fileID: 2800000, guid: 17744a5d91506457a86ea6af6bcd44d0, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - simplexTexture:
+        m_Texture: {fileID: 2800000, guid: 17744a5d91506457a86ea6af6bcd44d0, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Floats:
+    - _BandFilter: 0.5074627
+    - _BandWidth: 1
+    - _CityRimPower: 16.044777
+    - _CityScale: 3
+    - _CityWidth: 0.025373137
+    - _Freq2: 0.1
+    - _LineWidth: 0.01
+    - _Noise1Scale: 1
+    - _NoiseScale: 0.1
+    - _NoiseScale1: 0.2
+    - _NoiseScale2: 0
+    - _RimPower: 3.4996967
+    - _Seed: 0.57187897
+    - _Shininess: 0.49933702
+    m_Colors:
+    - _BandFilter: {r: 0, g: 0, b: 1, a: 1}
+    - _CityLightColor: {r: 0.95752007, g: 1, b: 0.7238806, a: 1}
+    - _Color: {r: 1, g: 1, b: 1, a: 1}
+    - _GridColor: {r: 0, g: 0, b: 0, a: 0}
+    - _LineColor: {r: 1, g: 1, b: 1, a: 1}
+    - _RimColor: {r: 0.39607844, g: 0.44275331, b: 0.6862745, a: 0}
+    - _SpecColor: {r: 0.038582083, g: 0.53867555, b: 0.6144473, a: 1}
+    - _Tint1: {r: 0, g: 0, b: 1, a: 1}
+    - _Tint2: {r: 1, g: 1, b: 1, a: 1}
+    - _WaterColor: {r: 0.17737804, g: 0.19492093, b: 0.67910445, a: 1}
+  m_BuildTextureStacks: []
+--- !u!1002 &2100001
+EditorExtensionImpl:
+  serializedVersion: 6
