@@ -62,7 +62,6 @@ public class PlayerShipController : MonoBehaviour
         if (!externallyControlled)
         {
             VelocityManagement();
-            TorqueManagement();
             PointTowardsMouse();
 
             ShootManagement();
@@ -76,19 +75,18 @@ public class PlayerShipController : MonoBehaviour
         SetVelocity(transform.forward * standardSpeedMagnitude);
     }
 
-    private void TorqueManagement()
+    private void ShootManagement()
     {
-        Vector3 currentRotation = transform.localEulerAngles;
-        float x = InputManager.Instance.mousePosition.x;
-
-        //transform.RotateAround(transform.position, Vector3.forward, Mathf.Lerp(0, 60, Mathf.Abs(x) * -Mathf.Sign(x)));
+        if (InputManager.Instance.shootState)
+        {
+            Instantiate(standardBullet, standardShootSpawns[0].transform.position, Quaternion.Euler(transform.localEulerAngles));
+            Instantiate(standardBullet, standardShootSpawns[1].transform.position, Quaternion.Euler(transform.localEulerAngles));
+        }
     }
 
     private void PointTowardsMouse()
     {
         Vector3 mousePosition = InputManager.Instance.mousePosition;
-
-        Debug.Log(mousePosition.x);
 
         // Setting the new rotation 
         transform.rotation *= Quaternion.Euler(
@@ -104,11 +102,6 @@ public class PlayerShipController : MonoBehaviour
         );
 
         prevLookAt = mousePosition - transform.position;
-    }
-
-    private void ShootManagement()
-    {
-
     }
 
     public void SetVelocity(Vector3 toSet)

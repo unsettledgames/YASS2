@@ -13,6 +13,9 @@ GameObject:
   - component: {fileID: 2441583916494810857}
   - component: {fileID: 7317728986581835491}
   - component: {fileID: 5237493657775025933}
+  - component: {fileID: 2831499289493802976}
+  - component: {fileID: 5580587593019055371}
+  - component: {fileID: 1944836076832098191}
   m_Layer: 0
   m_Name: Rock4
   m_TagString: Untagged
@@ -110,3 +113,48 @@ CapsuleCollider:
   m_Height: 3.633606
   m_Direction: 1
   m_Center: {x: 0.17600602, y: -0.022817016, z: 0.005756974}
+--- !u!114 &2831499289493802976
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5088785953716078452}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8f9c42672c6452f40b6d7acc32e747b1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHealth: 50
+  canFracture: 1
+  deathExplosion: {fileID: 100000, guid: 8e02e06584f51ab42986fd44c73d976e, type: 3}
+--- !u!114 &5580587593019055371
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5088785953716078452}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 59592e431eb8faa468223b1f009a7a00, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxRotationMagnitude: 1
+  maxVelocityMagnitude: 0.5
+--- !u!54 &1944836076832098191
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5088785953716078452}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 0
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
