@@ -18,7 +18,7 @@ GameObject:
   - component: {fileID: 5690881353746439272}
   m_Layer: 0
   m_Name: Rock8
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -99,6 +99,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   fractured: {fileID: 4431163409800634606, guid: 0ff42f37aee0fec44bcd79763ae4f92f, type: 3}
+  fractureMagnitude: 5
+  fracturedDestroyTime: 5
 --- !u!136 &4753719044248358
 CapsuleCollider:
   m_ObjectHideFlags: 0

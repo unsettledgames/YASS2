@@ -12,6 +12,7 @@ public class RandomEnemySpawner : MonoBehaviour
     [Header("Spawn behaviour")]
     public SpawnType spawnType;
     public float distanceFromPlayer;
+    public float asteroidOffset = 10;
     public bool parent;
 
     [Header("Spawn rate data")]
@@ -63,14 +64,26 @@ public class RandomEnemySpawner : MonoBehaviour
 
     private GameObject InstantiateEnemy()
     {
+        float offsetX = Random.Range(-1, 1);
+        float offsetY = Random.Range(-1, 1);
+        float offsetZ = Random.Range(-1, 1);
+
+        if (offsetX == 0)
+            offsetX = 1;
+        if (offsetY == 0)
+            offsetY = -1;
+        if (offsetZ == 0)
+            offsetZ = 1;
+
         GameObject ret = Instantiate(toSpawn[Random.Range(0, toSpawn.Length)],
-            new Vector3(Random.Range(-1, 1), Random.Range(-1, 1), Random.Range(-1, 1)).normalized * distanceFromPlayer,
-            Quaternion.Euler(Vector3.zero));        
+            new Vector3(Random.Range(-1f, 1f), Random.Range(-1f, 1f), Random.Range(-1f, 1f)).normalized * asteroidOffset +
+            new Vector3(offsetX, offsetY, offsetZ) * distanceFromPlayer,
+            Quaternion.Euler(Vector3.zero)
+        );
 
         if (parent)
             ret.transform.parent = transform;
 
         return ret;
     }
-        
 }

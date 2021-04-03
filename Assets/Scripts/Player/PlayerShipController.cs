@@ -4,9 +4,16 @@ using UnityEngine;
 
 public class PlayerShipController : MonoBehaviour
 {
-    [Header("Movement velocities")]
+    [Header("Movement")]
     public float standardSpeedMagnitude;
     public float maxSpeedMagnitude;
+    public float minSpeedMagnitude = 3f;
+    [Header("Dodge")]
+    public float dodgeSpeed = 20f;
+    public float dodgeDistance = 5f;
+    public float forwardDodgeAmount = 3f;
+    public GameObject leftDodgeDirection;
+    public GameObject rightDodgeDirection;
 
     [Header("Components")]
     public GameObject model;
@@ -26,6 +33,9 @@ public class PlayerShipController : MonoBehaviour
 
     [Header("Shooting management")]
     public float shootRate = 0.15f;
+    public float autoAimDistance = 50f;
+    public float autoAimTween = 0.5f;
+
     public GameObject standardBullet;
     public GameObject missile;
 
@@ -41,6 +51,7 @@ public class PlayerShipController : MonoBehaviour
 
     // Shooting stuff
     private float nextShootTime;
+    private GameObject currentTarget;
     
 
     // Start is called before the first frame update
@@ -54,8 +65,15 @@ public class PlayerShipController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        // This is because when dodging, the ship is controlled externally
         if (!externallyControlled)
         {
+            DodgeManagement();
+        }
+
+        if (!externallyControlled)
+        {
+            
             VelocityManagement();
             PointTowardsMouse();
 
@@ -63,28 +81,81 @@ public class PlayerShipController : MonoBehaviour
         }
     }
 
+    private void DodgeManagement()
+    {
+        bool leftDodge = InputManager.Instance.leftDodge;
+        bool rightDodge = InputManager.Instance.rightDodge;
+
+        Vector3 dodgeDestination;
+        Vector3 angleDestination = model.transform.localEulerAngles;
+
+        if (leftDodge || rightDodge)
+        {
+            angleDestination.z += leftDodge ? 720 : -720;
+            dodgeDestination = (leftDodge ? leftDodgeDirection.transform.position : rightDodgeDirection.transform.position);
+
+            TakeControl();
+
+            // Starting rotation routine
+            StartCoroutine(MovementUtility.SlideVector3(
+                model.transform.localEulerAngles, angleDestination, dodgeSpeed, Consts.easeCurve,
+                UpdateModelRotation, null, null));
+            
+            // Starting position routine
+            StartCoroutine(MovementUtility.SlideVector3(
+                transform.position, dodgeDestination, dodgeSpeed, Consts.easeCurve,
+                UpdatePosition, ReleaseControl, null));
+        }
+    }
+
     private void VelocityManagement()
     {
-        SetVelocity(transform.forward * standardSpeedMagnitude);
+        // Standard velocity
+        Vector3 toSet = transform.forward * standardSpeedMagnitude;
+
+        if (InputManager.Instance.accelerationAmount > 0)
+        {
+            // Adding acceleration
+            toSet = Vector3.Lerp(toSet, toSet.normalized * maxSpeedMagnitude, InputManager.Instance.accelerationAmount);
+        }
+        else if (InputManager.Instance.accelerationAmount < 0)
+        {
+            // Removing acceleration
+            toSet = Vector3.Lerp(toSet.normalized * minSpeedMagnitude, toSet, 1 + InputManager.Instance.accelerationAmount);
+        }
+
+        SetVelocity(toSet);
     }
 
     private void ShootManagement()
     {
         Vector3 mouseWorldPos = FrequentlyAccessed.Instance.cameraComponent.ScreenToWorldPoint(InputManager.Instance.globalMousePosition);
         RaycastHit aimHit;
-        bool hitObject = Physics.Raycast(transform.position, mouseWorldPos - transform.position, out aimHit, Mathf.Infinity, ~(1 << 8));
-
-        Debug.DrawRay(transform.position, mouseWorldPos - transform.position);
+        bool hitObject = Physics.Raycast(mouseWorldPos, transform.forward, out aimHit, Mathf.Infinity, ~(1 << 8));
 
         if (hitObject)
         {
-            Debug.Log("Hit: " + aimHit.collider.name);
+            currentTarget = aimHit.collider.gameObject;
+        }
+        else
+        {
+            currentTarget = null;
         }
 
         if (InputManager.Instance.shootState && Time.time >= nextShootTime)
         {
-            Instantiate(standardBullet, standardShootSpawns[0].transform.position, Quaternion.Euler(transform.localEulerAngles));
-            Instantiate(standardBullet, standardShootSpawns[1].transform.position, Quaternion.Euler(transform.localEulerAngles));
+            // Instantiating projectiles
+            GameObject instantiated = Instantiate(standardBullet, standardShootSpawns[0].transform.position, Quaternion.Euler(transform.localEulerAngles));
+            GameObject instantiated2 = Instantiate(standardBullet, standardShootSpawns[1].transform.position, Quaternion.Euler(transform.localEulerAngles));
+
+            // Autoaim if the player is hovering an enemy
+            if (currentTarget != null && currentTarget.tag.Contains("Enemy"))
+            {
+                Vector3 toLookAt = currentTarget.transform.position;
+
+                instantiated.transform.LookAt(toLookAt);
+                instantiated2.transform.LookAt(toLookAt);
+            }
 
             nextShootTime = Time.time + shootRate;
         }
@@ -93,19 +164,25 @@ public class PlayerShipController : MonoBehaviour
     private void PointTowardsMouse()
     {
         Vector3 mousePosition = InputManager.Instance.relativeMousePosition;
+        Vector3 rotation = ObjectPooler.Instance.GetVector3();
+        Vector3 localVelocity = physics.velocity;
 
         // Setting the new rotation 
         transform.rotation *= Quaternion.Euler(
-            -mousePosition.y * Time.deltaTime * torqueSpeed, 
+            -mousePosition.y * Time.deltaTime * torqueSpeed,
             mousePosition.x * Time.deltaTime * torqueSpeed,
-            0
+            Mathf.Lerp(-maxTorque, maxTorque, 1 - (InputManager.Instance.torqueAmount + 1) / 2)
         );
 
+        Debug.Log("Relative velocity: " + localVelocity / standardSpeedMagnitude);
+
+        rotation.x = Mathf.Lerp(0, 30, Mathf.Abs(mousePosition.y)) * -Mathf.Sign(mousePosition.y);
+        rotation.y = 0;
+        rotation.z = Mathf.Lerp(0, 60, Mathf.Abs(mousePosition.x)) * -Mathf.Sign(mousePosition.x);
         // Setting rotation (only to make it look cooler)
-        model.transform.localEulerAngles = new Vector3(
-            Mathf.Lerp(0, 30, Mathf.Abs(mousePosition.y)) * -Mathf.Sign(mousePosition.y), 0, 
-            Mathf.Lerp(0, 60, Mathf.Abs(mousePosition.x)) * -Mathf.Sign(mousePosition.x)
-        );
+        model.transform.localEulerAngles = rotation;
+
+        ObjectPooler.Instance.EnqueueVector3(rotation);
     }
 
     public void SetVelocity(Vector3 toSet)
@@ -116,13 +193,33 @@ public class PlayerShipController : MonoBehaviour
         physics.velocity = toSet;
     }
 
-    public void TakeControl()
+    public void TakeControl(float time)
+    {
+        StartCoroutine(ControlRoutine(time));
+    }
+    private IEnumerator ControlRoutine(float time)
+    {
+        TakeControl();
+        yield return new WaitForSeconds(time);
+        ReleaseControl();
+    }
+    public void TakeControl(ArrayList parameters = null)
     {
         externallyControlled = true;
     }
 
-    public void ReleaseControl()
+    public void ReleaseControl(ArrayList parameters = null)
     {
         externallyControlled = false;
+    }
+
+    private void UpdateModelRotation(Vector3 rotation)
+    {
+        model.transform.localEulerAngles = rotation;
+    }
+
+    private void UpdatePosition(Vector3 position)
+    {
+        transform.position = position;
     }
 }

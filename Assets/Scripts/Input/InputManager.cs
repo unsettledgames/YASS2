@@ -78,7 +78,6 @@ public class InputManager : MonoBehaviour
         // Left dodge
         if (aState && nextATime < Time.time)
         {
-            Debug.Log("Ok A");
             nextATime = Time.time + tapTime;
         }
         else if (aState)
@@ -86,14 +85,12 @@ public class InputManager : MonoBehaviour
             if (Time.time < nextATime)
             {
                 leftDodge = true;
-                Debug.Log("Left dodge!");
             }
         }
 
         // Right dodge
         if (dState && nextDTime < Time.time)
         {
-            Debug.Log("Ok D");
             nextDTime = Time.time + tapTime;
         }
         else if (dState)
@@ -101,7 +98,6 @@ public class InputManager : MonoBehaviour
             if (Time.time < nextDTime)
             {
                 rightDodge = true;
-                Debug.Log("Right dodge!");
             }
         }
     }
