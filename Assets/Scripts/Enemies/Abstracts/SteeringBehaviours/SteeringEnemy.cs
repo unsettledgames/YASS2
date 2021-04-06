@@ -55,7 +55,7 @@ public class SteeringEnemy : OptimizedMonoBehaviour
                 if (distanceFromTarget > followDistance)
                     finalVelocity = Vector3.Lerp(steeringPhysics.velocity, desiredVelocity * followMaxSpeed, 0.5f);
                 else
-                    finalVelocity = Vector3.Lerp(steeringPhysics.velocity, Vector3.zero, 0.01f);
+                    finalVelocity = Vector3.Lerp(steeringPhysics.velocity, Vector3.zero, 0.1f);
 
                 steeringPhysics.velocity = finalVelocity;
             }
