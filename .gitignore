@@ -2,8 +2,14 @@
 #
 # Get latest from https://github.com/github/gitignore/blob/master/Unity.gitignore
 #
-Assets/Models/Julai_models
-Assets/Models/BreakableAsteroids/Asteroids/zasteroids.dae
+
+Build.zip
+/Assets/Models/Julai_models
+/Assets/Models/BreakableAsteroids/Asteroids/zasteroids.dae
+/Assets/Models/SpaceCraft2/Textures/diffuse.psd
+/Assets/Models/SpaceCraft2/Textures/occlusion.psd
+/Assets/Models/SpaceCraft2/Textures/specular.psd
+
 /[Ll]ibrary/
 /[Tt]emp/
 /[Oo]bj/
@@ -59,4 +65,5 @@ sysinfo.txt
 
 # Crashlytics generated file
 crashlytics-build.properties
+
 

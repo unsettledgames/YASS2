@@ -1,0 +1,255 @@
+fileFormatVersion: 2
+guid: 61bf477ba48700443a99766e01c41065
+timeCreated: 1509927693
+licenseType: Store
+ModelImporter:
+  serializedVersion: 19
+  fileIDToRecycleName:
+    100000: Box02
+    100002: cabin
+    100004: gun 2
+    100006: gun 3
+    100008: gun header
+    100010: gun pitcher
+    100012: kres 03
+    100014: kres 2
+    100016: Object04
+    100018: Object18
+    100020: Object19
+    100022: Object20
+    100024: Object21
+    100026: //RootNode
+    400000: Box02
+    400002: cabin
+    400004: gun 2
+    400006: gun 3
+    400008: gun header
+    400010: gun pitcher
+    400012: kres 03
+    400014: kres 2
+    400016: Object04
+    400018: Object18
+    400020: Object19
+    400022: Object20
+    400024: Object21
+    400026: //RootNode
+    2300000: Box02
+    2300002: gun 2
+    2300004: gun 3
+    2300006: gun header
+    2300008: gun pitcher
+    2300010: kres 03
+    2300012: kres 2
+    2300014: Object04
+    2300016: Object18
+    2300018: Object19
+    2300020: Object20
+    2300022: Object21
+    3300000: Box02
+    3300002: gun 2
+    3300004: gun 3
+    3300006: gun header
+    3300008: gun pitcher
+    3300010: kres 03
+    3300012: kres 2
+    3300014: Object04
+    3300016: Object18
+    3300018: Object19
+    3300020: Object20
+    3300022: Object21
+    4300000: gun header
+    4300002: gun 2
+    4300004: gun 3
+    4300006: gun pitcher
+    4300008: Object18
+    4300010: Object19
+    4300012: Object20
+    4300014: Object21
+    4300016: Box02
+    4300018: kres 2
+    4300020: kres 03
+    4300022: Object04
+    7400000: up
+    7400002: down
+    9500000: //RootNode
+    11100000: //RootNode
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 1
+    extraExposedTransformPaths: []
+    clipAnimations:
+    - serializedVersion: 16
+      name: up
+      takeName: Take 001
+      firstFrame: 0
+      lastFrame: 90
+      wrapMode: 1
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: gun header
+        weight: 1
+      - path: gun header/cabin
+        weight: 1
+      - path: gun header/cabin/Box02
+        weight: 1
+      - path: gun header/cabin/kres 2
+        weight: 1
+      - path: gun header/cabin/kres 03
+        weight: 1
+      - path: gun header/cabin/Object04
+        weight: 1
+      - path: gun header/cabin/Object18
+        weight: 1
+      - path: gun header/cabin/Object19
+        weight: 1
+      - path: gun header/cabin/Object20
+        weight: 1
+      - path: gun header/cabin/Object21
+        weight: 1
+      - path: gun header/gun 2
+        weight: 1
+      - path: gun header/gun 3
+        weight: 1
+      - path: gun header/gun pitcher
+        weight: 1
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: down
+      takeName: Take 001
+      firstFrame: 90
+      lastFrame: 180
+      wrapMode: 1
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: gun header
+        weight: 1
+      - path: gun header/cabin
+        weight: 1
+      - path: gun header/cabin/Box02
+        weight: 1
+      - path: gun header/cabin/kres 2
+        weight: 1
+      - path: gun header/cabin/kres 03
+        weight: 1
+      - path: gun header/cabin/Object04
+        weight: 1
+      - path: gun header/cabin/Object18
+        weight: 1
+      - path: gun header/cabin/Object19
+        weight: 1
+      - path: gun header/cabin/Object20
+        weight: 1
+      - path: gun header/cabin/Object21
+        weight: 1
+      - path: gun header/gun 2
+        weight: 1
+      - path: gun header/gun 3
+        weight: 1
+      - path: gun header/gun pitcher
+        weight: 1
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    serializedVersion: 2
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 1
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 1
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

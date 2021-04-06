@@ -1,0 +1,173 @@
+fileFormatVersion: 2
+guid: 8387db693b5977d4180afe83ede0233c
+timeCreated: 1509973758
+licenseType: Store
+ModelImporter:
+  serializedVersion: 19
+  fileIDToRecycleName:
+    100000: Body
+    100002: Head
+    100004: Lcarpal
+    100006: Lfoot
+    100008: Lhand
+    100010: Lindex1
+    100012: Lindex2
+    100014: Lindex3
+    100016: Lindex4
+    100018: Lmid1
+    100020: Lmid2
+    100022: Lmid3
+    100024: Lmid4
+    100026: Lring1
+    100028: Lring2
+    100030: Lring3
+    100032: Lring4
+    100034: Lshin
+    100036: Lshldr
+    100038: Lshoulder
+    100040: Lthigh
+    100042: Ltoe
+    100044: Neck
+    100046: Rcarpal
+    100048: Rfoot
+    100050: Rhand
+    100052: Rindex1
+    100054: Rindex2
+    100056: Rindex3
+    100058: Rindex4
+    100060: Rmid1
+    100062: Rmid2
+    100064: Rmid3
+    100066: Rmid4
+    100068: robo 1
+    100070: robo 2
+    100072: //RootNode
+    100074: Root
+    100076: Rring1
+    100078: Rring2
+    100080: Rring3
+    100082: Rring4
+    100084: Rshin
+    100086: Rshldr
+    100088: Rshoulder
+    100090: Rthigh
+    100092: Rtoe
+    400000: Body
+    400002: Head
+    400004: Lcarpal
+    400006: Lfoot
+    400008: Lhand
+    400010: Lindex1
+    400012: Lindex2
+    400014: Lindex3
+    400016: Lindex4
+    400018: Lmid1
+    400020: Lmid2
+    400022: Lmid3
+    400024: Lmid4
+    400026: Lring1
+    400028: Lring2
+    400030: Lring3
+    400032: Lring4
+    400034: Lshin
+    400036: Lshldr
+    400038: Lshoulder
+    400040: Lthigh
+    400042: Ltoe
+    400044: Neck
+    400046: Rcarpal
+    400048: Rfoot
+    400050: Rhand
+    400052: Rindex1
+    400054: Rindex2
+    400056: Rindex3
+    400058: Rindex4
+    400060: Rmid1
+    400062: Rmid2
+    400064: Rmid3
+    400066: Rmid4
+    400068: robo 1
+    400070: robo 2
+    400072: //RootNode
+    400074: Root
+    400076: Rring1
+    400078: Rring2
+    400080: Rring3
+    400082: Rring4
+    400084: Rshin
+    400086: Rshldr
+    400088: Rshoulder
+    400090: Rthigh
+    400092: Rtoe
+    4300000: robo
+    9500000: //RootNode
+    11100000: //RootNode
+    13700000: robo 2
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    serializedVersion: 2
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 1
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 1
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

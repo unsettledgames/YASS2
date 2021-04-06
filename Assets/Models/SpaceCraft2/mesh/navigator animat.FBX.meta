@@ -1,0 +1,296 @@
+fileFormatVersion: 2
+guid: b0d6141c27567f6479b412037b5ddd73
+timeCreated: 1509977105
+licenseType: Store
+ModelImporter:
+  serializedVersion: 19
+  fileIDToRecycleName:
+    100000: Body02
+    100002: Head02
+    100004: Lcarpal02
+    100006: Lfoot02
+    100008: Lhand02
+    100010: Lindex09
+    100012: Lindex10
+    100014: Lindex11
+    100016: Lindex12
+    100018: Lmid09
+    100020: Lmid10
+    100022: Lmid11
+    100024: Lmid12
+    100026: Lring09
+    100028: Lring10
+    100030: Lring11
+    100032: Lring12
+    100034: Lshin02
+    100036: Lshldr02
+    100038: Lshoulder02
+    100040: Lthigh02
+    100042: Ltoe02
+    100044: //RootNode
+    100046: Neck02
+    100048: Rcarpal02
+    100050: Rfoot02
+    100052: Rhand02
+    100054: Rindex09
+    100056: Rindex10
+    100058: Rindex11
+    100060: Rindex12
+    100062: Rmid09
+    100064: Rmid10
+    100066: Rmid11
+    100068: Rmid12
+    100070: robo
+    100072: robo02
+    100074: Root02
+    100076: Rring09
+    100078: Rring10
+    100080: Rring11
+    100082: Rring12
+    100084: Rshin02
+    100086: Rshldr02
+    100088: Rshoulder02
+    100090: Rthigh02
+    100092: Rtoe02
+    400000: Body02
+    400002: Head02
+    400004: Lcarpal02
+    400006: Lfoot02
+    400008: Lhand02
+    400010: Lindex09
+    400012: Lindex10
+    400014: Lindex11
+    400016: Lindex12
+    400018: Lmid09
+    400020: Lmid10
+    400022: Lmid11
+    400024: Lmid12
+    400026: Lring09
+    400028: Lring10
+    400030: Lring11
+    400032: Lring12
+    400034: Lshin02
+    400036: Lshldr02
+    400038: Lshoulder02
+    400040: Lthigh02
+    400042: Ltoe02
+    400044: //RootNode
+    400046: Neck02
+    400048: Rcarpal02
+    400050: Rfoot02
+    400052: Rhand02
+    400054: Rindex09
+    400056: Rindex10
+    400058: Rindex11
+    400060: Rindex12
+    400062: Rmid09
+    400064: Rmid10
+    400066: Rmid11
+    400068: Rmid12
+    400070: robo
+    400072: robo02
+    400074: Root02
+    400076: Rring09
+    400078: Rring10
+    400080: Rring11
+    400082: Rring12
+    400084: Rshin02
+    400086: Rshldr02
+    400088: Rshoulder02
+    400090: Rthigh02
+    400092: Rtoe02
+    4300000: robo02
+    7400000: default
+    9500000: //RootNode
+    11100000: //RootNode
+    13700000: robo02
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    animationCompression: 0
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 2
+    extraExposedTransformPaths: []
+    clipAnimations:
+    - serializedVersion: 16
+      name: default
+      takeName: Take 001
+      firstFrame: 0
+      lastFrame: 550
+      wrapMode: 2
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: robo
+        weight: 1
+      - path: robo/robo02
+        weight: 1
+      - path: robo/Root02
+        weight: 1
+      - path: robo/Root02/Body02
+        weight: 1
+      - path: robo/Root02/Body02/Lshldr02
+        weight: 1
+      - path: robo/Root02/Body02/Lshldr02/Lshoulder02
+        weight: 1
+      - path: robo/Root02/Body02/Lshldr02/Lshoulder02/Lhand02
+        weight: 1
+      - path: robo/Root02/Body02/Lshldr02/Lshoulder02/Lhand02/Lcarpal02
+        weight: 1
+      - path: robo/Root02/Body02/Lshldr02/Lshoulder02/Lhand02/Lcarpal02/Lindex09
+        weight: 1
+      - path: robo/Root02/Body02/Lshldr02/Lshoulder02/Lhand02/Lcarpal02/Lindex09/Lindex10
+        weight: 1
+      - path: robo/Root02/Body02/Lshldr02/Lshoulder02/Lhand02/Lcarpal02/Lindex09/Lindex10/Lindex11
+        weight: 1
+      - path: robo/Root02/Body02/Lshldr02/Lshoulder02/Lhand02/Lcarpal02/Lindex09/Lindex10/Lindex11/Lindex12
+        weight: 1
+      - path: robo/Root02/Body02/Lshldr02/Lshoulder02/Lhand02/Lcarpal02/Lmid09
+        weight: 1
+      - path: robo/Root02/Body02/Lshldr02/Lshoulder02/Lhand02/Lcarpal02/Lmid09/Lmid10
+        weight: 1
+      - path: robo/Root02/Body02/Lshldr02/Lshoulder02/Lhand02/Lcarpal02/Lmid09/Lmid10/Lmid11
+        weight: 1
+      - path: robo/Root02/Body02/Lshldr02/Lshoulder02/Lhand02/Lcarpal02/Lmid09/Lmid10/Lmid11/Lmid12
+        weight: 1
+      - path: robo/Root02/Body02/Lshldr02/Lshoulder02/Lhand02/Lcarpal02/Lring09
+        weight: 1
+      - path: robo/Root02/Body02/Lshldr02/Lshoulder02/Lhand02/Lcarpal02/Lring09/Lring10
+        weight: 1
+      - path: robo/Root02/Body02/Lshldr02/Lshoulder02/Lhand02/Lcarpal02/Lring09/Lring10/Lring11
+        weight: 1
+      - path: robo/Root02/Body02/Lshldr02/Lshoulder02/Lhand02/Lcarpal02/Lring09/Lring10/Lring11/Lring12
+        weight: 1
+      - path: robo/Root02/Body02/Neck02
+        weight: 1
+      - path: robo/Root02/Body02/Neck02/Head02
+        weight: 1
+      - path: robo/Root02/Body02/Rshldr02
+        weight: 1
+      - path: robo/Root02/Body02/Rshldr02/Rshoulder02
+        weight: 1
+      - path: robo/Root02/Body02/Rshldr02/Rshoulder02/Rhand02
+        weight: 1
+      - path: robo/Root02/Body02/Rshldr02/Rshoulder02/Rhand02/Rcarpal02
+        weight: 1
+      - path: robo/Root02/Body02/Rshldr02/Rshoulder02/Rhand02/Rcarpal02/Rindex09
+        weight: 1
+      - path: robo/Root02/Body02/Rshldr02/Rshoulder02/Rhand02/Rcarpal02/Rindex09/Rindex10
+        weight: 1
+      - path: robo/Root02/Body02/Rshldr02/Rshoulder02/Rhand02/Rcarpal02/Rindex09/Rindex10/Rindex11
+        weight: 1
+      - path: robo/Root02/Body02/Rshldr02/Rshoulder02/Rhand02/Rcarpal02/Rindex09/Rindex10/Rindex11/Rindex12
+        weight: 1
+      - path: robo/Root02/Body02/Rshldr02/Rshoulder02/Rhand02/Rcarpal02/Rmid09
+        weight: 1
+      - path: robo/Root02/Body02/Rshldr02/Rshoulder02/Rhand02/Rcarpal02/Rmid09/Rmid10
+        weight: 1
+      - path: robo/Root02/Body02/Rshldr02/Rshoulder02/Rhand02/Rcarpal02/Rmid09/Rmid10/Rmid11
+        weight: 1
+      - path: robo/Root02/Body02/Rshldr02/Rshoulder02/Rhand02/Rcarpal02/Rmid09/Rmid10/Rmid11/Rmid12
+        weight: 1
+      - path: robo/Root02/Body02/Rshldr02/Rshoulder02/Rhand02/Rcarpal02/Rring09
+        weight: 1
+      - path: robo/Root02/Body02/Rshldr02/Rshoulder02/Rhand02/Rcarpal02/Rring09/Rring10
+        weight: 1
+      - path: robo/Root02/Body02/Rshldr02/Rshoulder02/Rhand02/Rcarpal02/Rring09/Rring10/Rring11
+        weight: 1
+      - path: robo/Root02/Body02/Rshldr02/Rshoulder02/Rhand02/Rcarpal02/Rring09/Rring10/Rring11/Rring12
+        weight: 1
+      - path: robo/Root02/Lthigh02
+        weight: 1
+      - path: robo/Root02/Lthigh02/Lshin02
+        weight: 1
+      - path: robo/Root02/Lthigh02/Lshin02/Lfoot02
+        weight: 1
+      - path: robo/Root02/Lthigh02/Lshin02/Lfoot02/Ltoe02
+        weight: 1
+      - path: robo/Root02/Rthigh02
+        weight: 1
+      - path: robo/Root02/Rthigh02/Rshin02
+        weight: 1
+      - path: robo/Root02/Rthigh02/Rshin02/Rfoot02
+        weight: 1
+      - path: robo/Root02/Rthigh02/Rshin02/Rfoot02/Rtoe02
+        weight: 1
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    serializedVersion: 2
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 1
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 1
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

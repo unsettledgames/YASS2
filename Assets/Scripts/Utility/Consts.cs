@@ -34,6 +34,8 @@ public class Consts : MonoBehaviour
     public static AnimationCurve easeCurve = new AnimationCurve(new Keyframe(0, 0), new Keyframe(1, 1));
     public static AnimationCurve bounceCurve = new AnimationCurve(new Keyframe(0, 0), new Keyframe(1, 1));
 
+    public static float enemyOutlineWidth = 5;
+
     private void Awake()
     {
         Instance = this;

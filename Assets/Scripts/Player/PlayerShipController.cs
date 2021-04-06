@@ -52,6 +52,7 @@ public class PlayerShipController : MonoBehaviour
     // Shooting stuff
     private float nextShootTime;
     private GameObject currentTarget;
+    private GameObject prevTarget;
     
 
     // Start is called before the first frame update
@@ -79,6 +80,8 @@ public class PlayerShipController : MonoBehaviour
 
             ShootManagement();
         }
+
+        prevTarget = currentTarget;
     }
 
     private void DodgeManagement()
@@ -133,12 +136,21 @@ public class PlayerShipController : MonoBehaviour
         RaycastHit aimHit;
         bool hitObject = Physics.Raycast(mouseWorldPos, transform.forward, out aimHit, Mathf.Infinity, ~(1 << 8));
 
-        if (hitObject)
+        if (hitObject && aimHit.collider.tag.Contains("Enemy"))
         {
             currentTarget = aimHit.collider.gameObject;
+
+            if (prevTarget == null)
+            {
+                currentTarget.GetComponent<Outline>().OutlineWidth = Consts.enemyOutlineWidth;
+            }
         }
         else
         {
+            if (prevTarget != null)
+            {
+                currentTarget.GetComponent<Outline>().OutlineWidth = 0;
+            }
             currentTarget = null;
         }
 
@@ -149,7 +161,7 @@ public class PlayerShipController : MonoBehaviour
             GameObject instantiated2 = Instantiate(standardBullet, standardShootSpawns[1].transform.position, Quaternion.Euler(transform.localEulerAngles));
 
             // Autoaim if the player is hovering an enemy
-            if (currentTarget != null && currentTarget.tag.Contains("Enemy"))
+            if (currentTarget != null)
             {
                 Vector3 toLookAt = currentTarget.transform.position;
 
@@ -173,8 +185,6 @@ public class PlayerShipController : MonoBehaviour
             mousePosition.x * Time.deltaTime * torqueSpeed,
             Mathf.Lerp(-maxTorque, maxTorque, 1 - (InputManager.Instance.torqueAmount + 1) / 2)
         );
-
-        Debug.Log("Relative velocity: " + localVelocity / standardSpeedMagnitude);
 
         rotation.x = Mathf.Lerp(0, 30, Mathf.Abs(mousePosition.y)) * -Mathf.Sign(mousePosition.y);
         rotation.y = 0;
