@@ -16,6 +16,7 @@ using UnityEngine;
 public class Outline : MonoBehaviour {
   private static HashSet<Mesh> registeredMeshes = new HashSet<Mesh>();
 
+    public bool outlineChildren = true;
   public enum Mode {
     OutlineAll,
     OutlineVisible,
@@ -82,8 +83,13 @@ public class Outline : MonoBehaviour {
 
   void Awake() {
 
-    // Cache renderers
-    renderers = GetComponentsInChildren<Renderer>();
+        // Cache renderers
+        if (outlineChildren)
+            renderers = GetComponentsInChildren<Renderer>();
+        else
+            renderers = GetComponents<Renderer>();
+            
+
 
     // Instantiate outline materials
     outlineMaskMaterial = Instantiate(Resources.Load<Material>(@"Materials/OutlineMask"));
@@ -163,8 +169,9 @@ public class Outline : MonoBehaviour {
 
     // Generate smooth normals for each mesh
     var bakedMeshes = new HashSet<Mesh>();
+        var filters = outlineChildren ? GetComponentsInChildren<MeshFilter>() : GetComponents<MeshFilter>();
 
-    foreach (var meshFilter in GetComponentsInChildren<MeshFilter>()) {
+    foreach (var meshFilter in filters) {
 
       // Skip duplicates
       if (!bakedMeshes.Add(meshFilter.sharedMesh)) {
@@ -181,8 +188,9 @@ public class Outline : MonoBehaviour {
 
   void LoadSmoothNormals() {
 
-    // Retrieve or generate smooth normals
-    foreach (var meshFilter in GetComponentsInChildren<MeshFilter>()) {
+        var filters = outlineChildren ? GetComponentsInChildren<MeshFilter>() : GetComponents<MeshFilter>();
+        // Retrieve or generate smooth normals
+        foreach (var meshFilter in filters) {
 
       // Skip if smooth normals have already been adopted
       if (!registeredMeshes.Add(meshFilter.sharedMesh)) {
@@ -197,8 +205,10 @@ public class Outline : MonoBehaviour {
       meshFilter.sharedMesh.SetUVs(3, smoothNormals);
     }
 
-    // Clear UV3 on skinned mesh renderers
-    foreach (var skinnedMeshRenderer in GetComponentsInChildren<SkinnedMeshRenderer>()) {
+        var skinned = outlineChildren ? GetComponentsInChildren<SkinnedMeshRenderer>() : GetComponents<SkinnedMeshRenderer>();
+
+        // Clear UV3 on skinned mesh renderers
+        foreach (var skinnedMeshRenderer in skinned) {
       if (registeredMeshes.Add(skinnedMeshRenderer.sharedMesh)) {
         skinnedMeshRenderer.sharedMesh.uv4 = new Vector2[skinnedMeshRenderer.sharedMesh.vertexCount];
       }

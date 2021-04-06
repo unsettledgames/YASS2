@@ -67,3 +67,6 @@ sysinfo.txt
 crashlytics-build.properties
 
 
+Assets/Models/SpaceCraft2/Textures/diffuse.psd.meta
+Assets/Models/SpaceCraft2/Textures/occlusion.psd.meta
+Assets/Models/SpaceCraft2/Textures/specular.psd.meta

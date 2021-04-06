@@ -26,6 +26,7 @@ public class SteeringEnemy : OptimizedMonoBehaviour
     // Escape behaviour attributes
     [HideInInspector] public float escapeForceMagnitude;
     [HideInInspector] public float escapeMaxSpeed;
+    [HideInInspector] public float escapeMinDistance;
 
     protected Rigidbody steeringPhysics;
     protected bool steeringOverriden;
@@ -42,16 +43,21 @@ public class SteeringEnemy : OptimizedMonoBehaviour
 
     protected void Update()
     {
-        Vector3 desiredVelocity = currentTarget.transform.position - transform.position;
+        Vector3 desiredVelocity = (currentTarget.transform.position - transform.position).normalized;
+        float distanceFromTarget = Vector3.Distance(transform.position, currentTarget.transform.position);
         Vector3 finalVelocity;
 
         if (allowFollow)
         {
             if (currentTarget != null)
             {
-                finalVelocity = desiredVelocity - steeringPhysics.velocity;
+                // Slow down when you're too near to the target
+                if (distanceFromTarget > followDistance)
+                    finalVelocity = Vector3.Lerp(steeringPhysics.velocity, desiredVelocity * followMaxSpeed, 0.5f);
+                else
+                    finalVelocity = Vector3.Lerp(steeringPhysics.velocity, Vector3.zero, 0.01f);
 
-                AddForce(finalVelocity.normalized * followForceMagnitude);
+                steeringPhysics.velocity = finalVelocity;
             }
 
             if (rotate)
@@ -64,14 +70,19 @@ public class SteeringEnemy : OptimizedMonoBehaviour
         {
             if (currentTarget != null)
             {
+                // The desired velocity points away from the target
                 desiredVelocity *= -1;
-                finalVelocity = desiredVelocity - steeringPhysics.velocity;
+                // Slow down when you're too far from the target
+                if (distanceFromTarget < escapeMinDistance)
+                    finalVelocity = Vector3.Lerp(steeringPhysics.velocity, desiredVelocity * escapeMaxSpeed, 0.5f);
+                else
+                    finalVelocity = Vector3.Lerp(steeringPhysics.velocity, Vector3.zero, 0.1f);
 
-                AddForce(finalVelocity.normalized * escapeForceMagnitude);
+                steeringPhysics.velocity = finalVelocity;
             }
 
             if (rotate)
-                transform.LookAt(desiredVelocity);
+                transform.LookAt(transform.position + desiredVelocity);
 
             ClampVelocity(escapeMaxSpeed);
         }        

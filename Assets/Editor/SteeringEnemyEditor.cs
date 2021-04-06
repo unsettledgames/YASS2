@@ -13,7 +13,7 @@ using UnityEditor;
  * 
  */ 
 
-[CustomEditor(typeof(SteeringEnemy))]
+[CustomEditor(typeof(SteeringEnemy)), CanEditMultipleObjects]
 public class SteeringEnemyEditor : Editor
 {
     [Header("Generic attributes")]
@@ -29,6 +29,7 @@ public class SteeringEnemyEditor : Editor
     // escape behaviour
     public SerializedProperty prop_escapeMaxSpeed;
     public SerializedProperty prop_escapeForceMagnitude;
+    public SerializedProperty prop_escapeMinDistance;
 
     // Foldout menus
     protected static bool showStaticOptions;
@@ -43,10 +44,11 @@ public class SteeringEnemyEditor : Editor
 
         prop_escapeMaxSpeed = serializedObject.FindProperty("escapeMaxSpeed");
         prop_escapeForceMagnitude = serializedObject.FindProperty("escapeForceMagnitude");
+        prop_escapeMinDistance = serializedObject.FindProperty("escapeMinDistance");
 
-        prop_followMaxSpeed = serializedObject.FindProperty("maxSpeed");
-        prop_followForceMagnitude = serializedObject.FindProperty("forceMagnitude");
-        prop_followDistance = serializedObject.FindProperty("distance");
+        prop_followMaxSpeed = serializedObject.FindProperty("followMaxSpeed");
+        prop_followForceMagnitude = serializedObject.FindProperty("followForceMagnitude");
+        prop_followDistance = serializedObject.FindProperty("followDistance");
     }
 
     public override void OnInspectorGUI()
@@ -90,6 +92,7 @@ public class SteeringEnemyEditor : Editor
             {
                 EditorGUILayout.PropertyField(prop_escapeMaxSpeed, new GUIContent("Max speed"));
                 EditorGUILayout.PropertyField(prop_escapeForceMagnitude, new GUIContent("Force magnitude"));
+                EditorGUILayout.PropertyField(prop_escapeMinDistance, new GUIContent("Escape min distance"));
             }
         }
 

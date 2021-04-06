@@ -20,9 +20,6 @@ public class EnemyHealthManager : OptimizedMonoBehaviour
     {
         if (!isQuitting)
         {
-            if (canFracture)
-                GetComponent<Fracture>().FractureObject();
-
             if (deathExplosion != null)
                 Instantiate(deathExplosion, transform.position, Quaternion.Euler(
                     new Vector3(Random.Range(0, 360),
@@ -30,6 +27,11 @@ public class EnemyHealthManager : OptimizedMonoBehaviour
                     Random.Range(0, 360)
                     ))
             ).GetComponent<Detonator>().Explode();
+
+            if (canFracture)
+                GetComponent<Fracture>().FractureObject();
+            else
+                Destroy(this.gameObject);
         }
     }
 
