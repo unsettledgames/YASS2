@@ -37,6 +37,7 @@ public class SteeringEnemyEditor : Editor
     public SerializedProperty prop_wanderSphereRadius;
     public SerializedProperty prop_wanderMaxSpeed;
     public SerializedProperty prop_wanderDirectionChangeRate;
+    public SerializedProperty prop_wanderForceMagnitude;
 
     // Foldout menus
     protected static bool showStaticOptions;
@@ -46,6 +47,11 @@ public class SteeringEnemyEditor : Editor
 
     private void OnEnable()
     {
+        showStaticOptions = true;
+        showFollowOptions = true;
+        showEscapeOptions = true;
+        showWanderOptions = true;
+
         prop_allowStatic = serializedObject.FindProperty("allowStatic");
         prop_allowFollow = serializedObject.FindProperty("allowFollow");
         prop_allowEscape = serializedObject.FindProperty("allowEscape");
@@ -66,6 +72,7 @@ public class SteeringEnemyEditor : Editor
         prop_wanderSphereRadius = serializedObject.FindProperty("sphereRadius");
         prop_wanderMaxSpeed = serializedObject.FindProperty("wanderMaxSpeed");
         prop_wanderDirectionChangeRate = serializedObject.FindProperty("wanderChangeDirectionRate");
+        prop_wanderForceMagnitude = serializedObject.FindProperty("wanderForceMagnitude");
     }
 
     public override void OnInspectorGUI()
@@ -125,6 +132,7 @@ public class SteeringEnemyEditor : Editor
                 EditorGUILayout.PropertyField(prop_wanderSphereDistance, new GUIContent("Sphere distance"));
                 EditorGUILayout.PropertyField(prop_wanderMaxSpeed, new GUIContent("Wander max speed"));
                 EditorGUILayout.PropertyField(prop_wanderDirectionChangeRate, new GUIContent("Direction change rate"));
+                EditorGUILayout.PropertyField(prop_wanderForceMagnitude, new GUIContent("Wander force magnitude"));
             }
         }
 

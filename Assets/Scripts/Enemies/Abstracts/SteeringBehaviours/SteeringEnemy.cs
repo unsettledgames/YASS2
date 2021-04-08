@@ -34,6 +34,7 @@ public class SteeringEnemy : OptimizedMonoBehaviour
     [HideInInspector] public float sphereRadius;
     [HideInInspector] public float wanderMaxSpeed;
     [HideInInspector] public float wanderChangeDirectionRate;
+    [HideInInspector] public float wanderForceMagnitude;
 
     protected Rigidbody steeringPhysics;
     protected Vector3 currentTarget;
@@ -42,6 +43,7 @@ public class SteeringEnemy : OptimizedMonoBehaviour
     protected Vector3 startVelocity;
     protected Vector3 startPosition;
     protected Vector3 currentVelocity;
+    protected Vector3 currentWanderDisplacement;
 
     private float nextWanderChangeDirectionTime;
 
@@ -67,125 +69,33 @@ public class SteeringEnemy : OptimizedMonoBehaviour
 
     protected void Update()
     {
-        /*
-        // Saving general attributes that will be used in Update
-        Vector3 desiredVelocity = (currentTarget - transform.position).normalized;
-        Vector3 currentVelocity = steeringPhysics.velocity;
-        Vector3 finalVelocity;
-
-        float distanceFromTarget = Vector3.Distance(transform.position, currentTarget);
-       
-
-        // FOLLOW BEHAVIOUR
-        if (allowFollow)
-        {
-            currentTarget = target.transform.position;
-
-            if (currentTarget != null)
-            {
-                Seek(currentTarget, currentVelocity, desiredVelocity, followMaxSpeed, followDistance);
-            }
-
-            if (rotate)
-                transform.LookAt(currentTarget);
-
-            ClampVelocity(followMaxSpeed);
-        }
-
-        // ESCAPE BEHAVIOUR
-        if (allowEscape)
-        {
-            currentTarget = target.transform.position;
-
-            if (currentTarget != null)
-            {
-                // The desired velocity points away from the target
-                desiredVelocity *= -1;
-                // Slow down when you're too far from the target
-                if (distanceFromTarget < escapeMinDistance)
-                    finalVelocity = Vector3.Lerp(currentVelocity, desiredVelocity * escapeMaxSpeed, 0.5f);
-                else
-                    finalVelocity = Vector3.Lerp(currentVelocity, Vector3.zero, 0.1f);
-
-                steeringPhysics.velocity = finalVelocity;
-            }
-
-            if (rotate)
-                transform.LookAt(transform.position + desiredVelocity);
-
-            ClampVelocity(escapeMaxSpeed);
-        }        
-
-        // WONDER BEHAVIOUR
-        if (allowWander)
-        {
-            if (Vector3.Distance(currentTarget, transform.position) < 1)
-            {
-                currentTarget = startPosition + new Vector3(Random.Range(-50f, 50f), Random.Range(-50f, 50f), Random.Range(-50f, 50f));
-            }
-
-            Debug.Log("current target: " + currentTarget);
-
-            Seek(currentTarget, currentVelocity, desiredVelocity, wanderMaxSpeed, 0);
-            /*
-            Vector3 displacementDirection = ObjectPooler.Instance.GetVector3();
-            // Placing the sphere
-            Vector3 sphereCenter = transform.position + currentVelocity.normalized * sphereDistance;
-            
-            // Computing the displacement direction if enough time has passed
-            if (Time.time >= nextWanderChangeDirectionTime)
-            {
-                Debug.Log(Time.time);
-                displacementDirection.x = Random.Range(-1f, 1f);
-                displacementDirection.y = Random.Range(-1f, 1f);
-                displacementDirection.z = Random.Range(-1f, 1f);
-
-                // Reset the direction change timer
-                nextWanderChangeDirectionTime = Time.time + wanderChangeDirectionRate;
-            }
-
-            // Computing the displacement point
-            Vector3 displacement = sphereCenter + displacementDirection;
-            // Computing the desired velocity
-            desiredVelocity = (displacement - transform.position).normalized * wanderMaxSpeed;
-            
-            // Lerping towards the desired velocity
-            steeringPhysics.AddForce((desiredVelocity - currentVelocity).normalized * wanderMaxSpeed);
-
-            if (rotate)
-                transform.LookAt(transform.position + steeringPhysics.velocity);
-
-            ObjectPooler.Instance.EnqueueVector3(displacementDirection);
-            ClampVelocity(wanderMaxSpeed);
-            
-            if (rotate)
-                transform.LookAt(transform.position + steeringPhysics.velocity);
-        }
-        */
-
         float distance = Vector3.Distance(transform.position, target.transform.position);
 
+        // FOLLOW behaviour
         if (allowFollow)
         {
-            currentVelocity = Seek(target.transform.position);
+            currentVelocity = Seek(target.transform.position, followMaxSpeed, followForceMagnitude);
             // Taking distance in account
             currentVelocity = Vector3.Lerp(currentVelocity, Vector3.zero, followDistance / distance);
 
             transform.position += currentVelocity * Time.deltaTime;
         }
 
+        // ESCAPE behaviour
         if (allowEscape)
         {
-            currentVelocity = Escape(target.transform.position);
+            currentVelocity = Escape(target.transform.position, escapeMaxSpeed, escapeForceMagnitude);
             // Taking distance in account
             currentVelocity = Vector3.Lerp(currentVelocity, Vector3.zero, distance / escapeMinDistance);
 
             transform.position += currentVelocity * Time.deltaTime;
         }
 
+        // WANDER behaviour
         if (allowWander)
         {
-
+            currentVelocity = Wander() * Time.deltaTime;
+            transform.position += currentVelocity;
         }
 
         if (rotate)
@@ -193,29 +103,49 @@ public class SteeringEnemy : OptimizedMonoBehaviour
         
     }
 
-    private Vector3 Seek(Vector3 target, float minDistance = 0)
+    private Vector3 Wander()
     {
         Vector3 ret;
-        Vector3 steering;
+        Vector3 sphereCenter = transform.position + currentVelocity.normalized * sphereDistance;
+        Vector3 displacement = ObjectPooler.Instance.GetVector3();
+        Vector3 desired;
 
-        // Distance from the player
-        float distance = Vector3.Distance(transform.position, target);
+        Debug.DrawLine(transform.position, sphereCenter, Color.red);
 
-        // Desired velocity (simply target - currentPosition)
-        Vector3 desired = Vector3.ClampMagnitude(target - transform.position, followMaxSpeed);
+        displacement.x = Random.Range(-1f, 1f);
+        displacement.y = Random.Range(-1f, 1f);
+        displacement.z = Random.Range(-1f, 1f);
 
-        // Computing steering vector, the difference between the desired and the current velocity.
-        // Clamping by followForceMagnitude to decide how fast the object changes direction
-        steering = Vector3.ClampMagnitude(desired - currentVelocity, followForceMagnitude);
-        // Adding steering force to the final vector
-        ret = Vector3.ClampMagnitude(currentVelocity + steering, followMaxSpeed);
+        Debug.DrawLine(transform.position, sphereCenter + displacement * sphereRadius, Color.green);
+
+        desired = (sphereCenter + displacement * sphereRadius).normalized * wanderMaxSpeed;
+        ret = (desired - currentVelocity).normalized * wanderForceMagnitude;
+
+        ObjectPooler.Instance.EnqueueVector3(displacement);
 
         return ret;
     }
 
-    private Vector3 Escape(Vector3 target, float maxDistance = Mathf.Infinity)
+    private Vector3 Seek(Vector3 target, float speed, float steeringForce)
     {
-        return -Seek(target);
+        Vector3 ret;
+        Vector3 steering;
+
+        // Desired velocity (simply target - currentPosition)
+        Vector3 desired = (target - transform.position).normalized * speed;
+
+        // Computing steering vector, the difference between the desired and the current velocity.
+        // Clamping by followForceMagnitude to decide how fast the object changes direction
+        steering = (desired - currentVelocity).normalized * steeringForce;
+        // Adding steering force to the final vector
+        ret = (currentVelocity + steering).normalized * speed;
+
+        return ret;
+    }
+
+    private Vector3 Escape(Vector3 target, float speed, float steeringForce)
+    {
+        return -Seek(target, speed, steeringForce);
     }
 
     /*
