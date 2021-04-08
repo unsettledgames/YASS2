@@ -17,6 +17,7 @@ public class SteeringEnemy : OptimizedMonoBehaviour
     public bool allowStatic;
     public bool allowFollow;
     public bool allowEscape;
+    public bool allowWander;
 
     // Follow behaviour attributes
     [HideInInspector] public float followForceMagnitude;
@@ -28,9 +29,20 @@ public class SteeringEnemy : OptimizedMonoBehaviour
     [HideInInspector] public float escapeMaxSpeed;
     [HideInInspector] public float escapeMinDistance;
 
+    // Wander behaviour attributes
+    [HideInInspector] public float sphereDistance;
+    [HideInInspector] public float sphereRadius;
+    [HideInInspector] public float wanderMaxSpeed;
+    [HideInInspector] public float wanderChangeDirectionRate;
+
     protected Rigidbody steeringPhysics;
+    protected Vector3 currentTarget;
+
     protected bool steeringOverriden;
-    protected GameObject currentTarget;
+    protected Vector3 startVelocity;
+    protected Vector3 startPosition;
+
+    private float nextWanderChangeDirectionTime;
 
     // Start is called before the first frame update
     protected void Start()
@@ -38,45 +50,60 @@ public class SteeringEnemy : OptimizedMonoBehaviour
         steeringOverriden = false;
         steeringPhysics = GetComponent<Rigidbody>();
 
-        currentTarget = target;
+        startVelocity = new Vector3(Random.Range(-1f, 1f), Random.Range(-1f, 1f), Random.Range(-1f, 1f));
+        startPosition = transform.position;
+
+        currentTarget = target.transform.position;
+
+        nextWanderChangeDirectionTime = Time.time + wanderChangeDirectionRate;
+
+        // Applying start velocity if the behaviour requires it
+        if (allowWander)
+        {
+            steeringPhysics.velocity = startVelocity * wanderMaxSpeed;
+        }
     }
 
     protected void Update()
     {
-        Vector3 desiredVelocity = (currentTarget.transform.position - transform.position).normalized;
-        float distanceFromTarget = Vector3.Distance(transform.position, currentTarget.transform.position);
+        // Saving general attributes that will be used in Update
+        Vector3 desiredVelocity = (currentTarget - transform.position).normalized;
+        Vector3 currentVelocity = steeringPhysics.velocity;
         Vector3 finalVelocity;
 
+        float distanceFromTarget = Vector3.Distance(transform.position, currentTarget);
+       
+
+        // FOLLOW BEHAVIOUR
         if (allowFollow)
         {
+            currentTarget = target.transform.position;
+
             if (currentTarget != null)
             {
-                // Slow down when you're too near to the target
-                if (distanceFromTarget > followDistance)
-                    finalVelocity = Vector3.Lerp(steeringPhysics.velocity, desiredVelocity * followMaxSpeed, 0.5f);
-                else
-                    finalVelocity = Vector3.Lerp(steeringPhysics.velocity, Vector3.zero, 0.1f);
-
-                steeringPhysics.velocity = finalVelocity;
+                Seek(currentTarget, currentVelocity, desiredVelocity, followMaxSpeed, followDistance);
             }
 
             if (rotate)
-                transform.LookAt(currentTarget.transform);
+                transform.LookAt(currentTarget);
 
             ClampVelocity(followMaxSpeed);
         }
 
+        // ESCAPE BEHAVIOUR
         if (allowEscape)
         {
+            currentTarget = target.transform.position;
+
             if (currentTarget != null)
             {
                 // The desired velocity points away from the target
                 desiredVelocity *= -1;
                 // Slow down when you're too far from the target
                 if (distanceFromTarget < escapeMinDistance)
-                    finalVelocity = Vector3.Lerp(steeringPhysics.velocity, desiredVelocity * escapeMaxSpeed, 0.5f);
+                    finalVelocity = Vector3.Lerp(currentVelocity, desiredVelocity * escapeMaxSpeed, 0.5f);
                 else
-                    finalVelocity = Vector3.Lerp(steeringPhysics.velocity, Vector3.zero, 0.1f);
+                    finalVelocity = Vector3.Lerp(currentVelocity, Vector3.zero, 0.1f);
 
                 steeringPhysics.velocity = finalVelocity;
             }
@@ -86,6 +113,65 @@ public class SteeringEnemy : OptimizedMonoBehaviour
 
             ClampVelocity(escapeMaxSpeed);
         }        
+
+        // WONDER BEHAVIOUR
+        if (allowWander)
+        {
+            if (Vector3.Distance(currentTarget, transform.position) < 1)
+            {
+                currentTarget = startPosition + new Vector3(Random.Range(-50f, 50f), Random.Range(-50f, 50f), Random.Range(-50f, 50f));
+            }
+
+            Debug.Log("current target: " + currentTarget);
+
+            Seek(currentTarget, currentVelocity, desiredVelocity, wanderMaxSpeed, 0);
+            /*
+            Vector3 displacementDirection = ObjectPooler.Instance.GetVector3();
+            // Placing the sphere
+            Vector3 sphereCenter = transform.position + currentVelocity.normalized * sphereDistance;
+            
+            // Computing the displacement direction if enough time has passed
+            if (Time.time >= nextWanderChangeDirectionTime)
+            {
+                Debug.Log(Time.time);
+                displacementDirection.x = Random.Range(-1f, 1f);
+                displacementDirection.y = Random.Range(-1f, 1f);
+                displacementDirection.z = Random.Range(-1f, 1f);
+
+                // Reset the direction change timer
+                nextWanderChangeDirectionTime = Time.time + wanderChangeDirectionRate;
+            }
+
+            // Computing the displacement point
+            Vector3 displacement = sphereCenter + displacementDirection;
+            // Computing the desired velocity
+            desiredVelocity = (displacement - transform.position).normalized * wanderMaxSpeed;
+            
+            // Lerping towards the desired velocity
+            steeringPhysics.AddForce((desiredVelocity - currentVelocity).normalized * wanderMaxSpeed);
+
+            if (rotate)
+                transform.LookAt(transform.position + steeringPhysics.velocity);
+
+            ObjectPooler.Instance.EnqueueVector3(displacementDirection);
+            ClampVelocity(wanderMaxSpeed);
+            */
+            if (rotate)
+                transform.LookAt(transform.position + steeringPhysics.velocity);
+        }
+    }
+
+    private void Seek(Vector3 target, Vector3 currentVelocity, Vector3 desiredVelocity, float maxSpeed, float distanceFromTarget = 0)
+    {
+        Vector3 finalVelocity;
+
+        // Slow down when you're too near to the target
+        if (Vector3.Distance(transform.position, target) > distanceFromTarget)
+            finalVelocity = Vector3.Lerp(currentVelocity, desiredVelocity * maxSpeed, 0.5f);
+        else
+            finalVelocity = Vector3.Lerp(currentVelocity, Vector3.zero, 0.1f);
+
+        steeringPhysics.velocity = finalVelocity;
     }
 
     private void ClampVelocity(float maxSpeed)
@@ -97,6 +183,10 @@ public class SteeringEnemy : OptimizedMonoBehaviour
     }
 
     public void SetTarget(GameObject toSet)
+    {
+        currentTarget = toSet.transform.position;
+    }
+    public void SetTarget(Vector3 toSet)
     {
         currentTarget = toSet;
     }

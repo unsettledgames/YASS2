@@ -17,7 +17,7 @@ public class FollowingSteeringEnemy : SteeringEnemy
 
         if (currentTarget != null)
         {
-            Vector3 desiredVelocity = currentTarget.transform.position - transform.position;
+            Vector3 desiredVelocity = currentTarget - transform.position;
             Vector3 finalVelocity = desiredVelocity - steeringPhysics.velocity;
 
             AddForce(finalVelocity.normalized * followForceMagnitude);
