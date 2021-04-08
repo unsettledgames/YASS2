@@ -41,6 +41,7 @@ public class SteeringEnemy : OptimizedMonoBehaviour
     protected bool steeringOverriden;
     protected Vector3 startVelocity;
     protected Vector3 startPosition;
+    protected Vector3 currentVelocity;
 
     private float nextWanderChangeDirectionTime;
 
@@ -66,6 +67,7 @@ public class SteeringEnemy : OptimizedMonoBehaviour
 
     protected void Update()
     {
+        /*
         // Saving general attributes that will be used in Update
         Vector3 desiredVelocity = (currentTarget - transform.position).normalized;
         Vector3 currentVelocity = steeringPhysics.velocity;
@@ -155,12 +157,68 @@ public class SteeringEnemy : OptimizedMonoBehaviour
 
             ObjectPooler.Instance.EnqueueVector3(displacementDirection);
             ClampVelocity(wanderMaxSpeed);
-            */
+            
             if (rotate)
                 transform.LookAt(transform.position + steeringPhysics.velocity);
         }
+        */
+
+        float distance = Vector3.Distance(transform.position, target.transform.position);
+
+        if (allowFollow)
+        {
+            currentVelocity = Seek(target.transform.position);
+            // Taking distance in account
+            currentVelocity = Vector3.Lerp(currentVelocity, Vector3.zero, followDistance / distance);
+
+            transform.position += currentVelocity * Time.deltaTime;
+        }
+
+        if (allowEscape)
+        {
+            currentVelocity = Escape(target.transform.position);
+            // Taking distance in account
+            currentVelocity = Vector3.Lerp(currentVelocity, Vector3.zero, distance / escapeMinDistance);
+
+            transform.position += currentVelocity * Time.deltaTime;
+        }
+
+        if (allowWander)
+        {
+
+        }
+
+        if (rotate)
+            transform.LookAt(transform.position + currentVelocity);
+        
     }
 
+    private Vector3 Seek(Vector3 target, float minDistance = 0)
+    {
+        Vector3 ret;
+        Vector3 steering;
+
+        // Distance from the player
+        float distance = Vector3.Distance(transform.position, target);
+
+        // Desired velocity (simply target - currentPosition)
+        Vector3 desired = Vector3.ClampMagnitude(target - transform.position, followMaxSpeed);
+
+        // Computing steering vector, the difference between the desired and the current velocity.
+        // Clamping by followForceMagnitude to decide how fast the object changes direction
+        steering = Vector3.ClampMagnitude(desired - currentVelocity, followForceMagnitude);
+        // Adding steering force to the final vector
+        ret = Vector3.ClampMagnitude(currentVelocity + steering, followMaxSpeed);
+
+        return ret;
+    }
+
+    private Vector3 Escape(Vector3 target, float maxDistance = Mathf.Infinity)
+    {
+        return -Seek(target);
+    }
+
+    /*
     private void Seek(Vector3 target, Vector3 currentVelocity, Vector3 desiredVelocity, float maxSpeed, float distanceFromTarget = 0)
     {
         Vector3 finalVelocity;
@@ -172,7 +230,7 @@ public class SteeringEnemy : OptimizedMonoBehaviour
             finalVelocity = Vector3.Lerp(currentVelocity, Vector3.zero, 0.1f);
 
         steeringPhysics.velocity = finalVelocity;
-    }
+    }*/
 
     private void ClampVelocity(float maxSpeed)
     {
