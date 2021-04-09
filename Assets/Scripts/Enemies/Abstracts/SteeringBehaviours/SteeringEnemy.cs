@@ -46,6 +46,8 @@ public class SteeringEnemy : OptimizedMonoBehaviour
     protected Vector3 currentWanderDisplacement;
 
     private float nextWanderChangeDirectionTime;
+    private Vector3 rotationAngle;
+    private float wanderAngleChange;
 
     // Start is called before the first frame update
     protected void Start()
@@ -58,7 +60,9 @@ public class SteeringEnemy : OptimizedMonoBehaviour
 
         currentTarget = target.transform.position;
 
-        nextWanderChangeDirectionTime = Time.time + wanderChangeDirectionRate;
+        currentWanderDisplacement = (new Vector3(Random.Range(-1f, 1f), Random.Range(-1f, 1f), Random.Range(-1f, 1f)).normalized).normalized * wanderMaxSpeed;
+        rotationAngle = new Vector3(Random.Range(-1f, 1f), Random.Range(-1f, 1f), Random.Range(-1f, 1f)).normalized * wanderAngleChange;
+        wanderAngleChange = 1f;
 
         // Applying start velocity if the behaviour requires it
         if (allowWander)
@@ -96,8 +100,10 @@ public class SteeringEnemy : OptimizedMonoBehaviour
         {
             currentVelocity = Wander() * Time.deltaTime;
             transform.position += currentVelocity;
-        }
 
+            Debug.Log("currentVelocity: " + currentVelocity.x + ", " + currentVelocity.y + ", " + currentVelocity.z);
+        }
+        
         if (rotate)
             transform.LookAt(transform.position + currentVelocity);
         
@@ -107,21 +113,11 @@ public class SteeringEnemy : OptimizedMonoBehaviour
     {
         Vector3 ret;
         Vector3 sphereCenter = transform.position + currentVelocity.normalized * sphereDistance;
-        Vector3 displacement = ObjectPooler.Instance.GetVector3();
-        Vector3 desired;
 
-        Debug.DrawLine(transform.position, sphereCenter, Color.red);
+        currentWanderDisplacement = Quaternion.Euler(rotationAngle) * currentWanderDisplacement;
+        rotationAngle += (Vector3.one).normalized * wanderAngleChange;
 
-        displacement.x = Random.Range(-1f, 1f);
-        displacement.y = Random.Range(-1f, 1f);
-        displacement.z = Random.Range(-1f, 1f);
-
-        Debug.DrawLine(transform.position, sphereCenter + displacement * sphereRadius, Color.green);
-
-        desired = (sphereCenter + displacement * sphereRadius).normalized * wanderMaxSpeed;
-        ret = (desired - currentVelocity).normalized * wanderForceMagnitude;
-
-        ObjectPooler.Instance.EnqueueVector3(displacement);
+        ret = (sphereCenter + currentWanderDisplacement).normalized * wanderMaxSpeed;
 
         return ret;
     }
