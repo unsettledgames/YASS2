@@ -61,8 +61,7 @@ public class SteeringEnemy : OptimizedMonoBehaviour
         currentTarget = target.transform.position;
 
         currentWanderDisplacement = (new Vector3(Random.Range(-1f, 1f), Random.Range(-1f, 1f), Random.Range(-1f, 1f)).normalized).normalized * wanderMaxSpeed;
-        rotationAngle = new Vector3(Random.Range(-1f, 1f), Random.Range(-1f, 1f), Random.Range(-1f, 1f)).normalized * wanderAngleChange;
-        wanderAngleChange = 1f;
+        rotationAngle = new Vector3(Random.Range(-1f, 1f), Random.Range(-1f, 1f), Random.Range(-1f, 1f)).normalized * wanderForceMagnitude;
 
         // Applying start velocity if the behaviour requires it
         if (allowWander)
@@ -117,7 +116,7 @@ public class SteeringEnemy : OptimizedMonoBehaviour
         currentWanderDisplacement = Quaternion.Euler(rotationAngle) * currentWanderDisplacement;
         rotationAngle += (Vector3.one).normalized * wanderAngleChange;
 
-        ret = (sphereCenter + currentWanderDisplacement).normalized * wanderMaxSpeed;
+        ret = (sphereCenter + currentWanderDisplacement - transform.position).normalized * wanderMaxSpeed;
 
         return ret;
     }
