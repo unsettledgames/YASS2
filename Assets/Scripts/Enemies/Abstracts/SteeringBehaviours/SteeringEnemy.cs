@@ -23,17 +23,20 @@ public class SteeringEnemy : OptimizedMonoBehaviour
     [HideInInspector] public float followForceMagnitude;
     [HideInInspector] public float followMaxSpeed;
     [HideInInspector] public float followDistance;
+    [HideInInspector] public bool followForecastTarget;
+    [HideInInspector] public float followForecastPrecision;
 
     // Escape behaviour attributes
     [HideInInspector] public float escapeForceMagnitude;
     [HideInInspector] public float escapeMaxSpeed;
     [HideInInspector] public float escapeMinDistance;
+    [HideInInspector] public bool escapeForecastTarget;
+    [HideInInspector] public float escapeForecastPrecision;
 
     // Wander behaviour attributes
     [HideInInspector] public float sphereDistance;
     [HideInInspector] public float sphereRadius;
     [HideInInspector] public float wanderMaxSpeed;
-    [HideInInspector] public float wanderChangeDirectionRate;
     [HideInInspector] public float wanderForceMagnitude;
 
     protected Rigidbody steeringPhysics;
@@ -45,9 +48,9 @@ public class SteeringEnemy : OptimizedMonoBehaviour
     protected Vector3 currentVelocity;
     protected Vector3 currentWanderDisplacement;
 
-    private float nextWanderChangeDirectionTime;
     private Vector3 rotationAngle;
     private float wanderAngleChange;
+    private Rigidbody targetPhysics;
 
     // Start is called before the first frame update
     protected void Start()
@@ -59,6 +62,7 @@ public class SteeringEnemy : OptimizedMonoBehaviour
         startPosition = transform.position;
 
         currentTarget = target.transform.position;
+        targetPhysics = target.GetComponent<Rigidbody>();
 
         currentWanderDisplacement = (new Vector3(Random.Range(-1f, 1f), Random.Range(-1f, 1f), Random.Range(-1f, 1f)).normalized).normalized * wanderMaxSpeed;
         rotationAngle = new Vector3(Random.Range(-1f, 1f), Random.Range(-1f, 1f), Random.Range(-1f, 1f)).normalized * wanderForceMagnitude;
@@ -77,17 +81,19 @@ public class SteeringEnemy : OptimizedMonoBehaviour
         // FOLLOW behaviour
         if (allowFollow)
         {
-            currentVelocity = Seek(target.transform.position, followMaxSpeed, followForceMagnitude);
+            currentVelocity = Seek(target.transform.position, followMaxSpeed, followForceMagnitude, targetPhysics.velocity, followForecastPrecision);
             // Taking distance in account
             currentVelocity = Vector3.Lerp(currentVelocity, Vector3.zero, followDistance / distance);
 
             transform.position += currentVelocity * Time.deltaTime;
+
+            Debug.Log("currentVelocity: " + currentVelocity);
         }
 
         // ESCAPE behaviour
         if (allowEscape)
         {
-            currentVelocity = Escape(target.transform.position, escapeMaxSpeed, escapeForceMagnitude);
+            currentVelocity = Escape(target.transform.position, escapeMaxSpeed, escapeForceMagnitude, targetPhysics.velocity);
             // Taking distance in account
             currentVelocity = Vector3.Lerp(currentVelocity, Vector3.zero, distance / escapeMinDistance);
 
@@ -99,8 +105,6 @@ public class SteeringEnemy : OptimizedMonoBehaviour
         {
             currentVelocity = Wander() * Time.deltaTime;
             transform.position += currentVelocity;
-
-            Debug.Log("currentVelocity: " + currentVelocity.x + ", " + currentVelocity.y + ", " + currentVelocity.z);
         }
         
         if (rotate)
@@ -116,15 +120,18 @@ public class SteeringEnemy : OptimizedMonoBehaviour
         currentWanderDisplacement = Quaternion.Euler(rotationAngle) * currentWanderDisplacement;
         rotationAngle += (Vector3.one).normalized * wanderAngleChange;
 
-        ret = (sphereCenter + currentWanderDisplacement - transform.position).normalized * wanderMaxSpeed;
+        ret = (sphereCenter + currentWanderDisplacement*sphereRadius - transform.position).normalized * wanderMaxSpeed;
 
         return ret;
     }
 
-    private Vector3 Seek(Vector3 target, float speed, float steeringForce)
+    private Vector3 Seek(Vector3 target, float speed, float steeringForce, Vector3 targetVelocity, float foreCastPrecision = 0)
     {
         Vector3 ret;
         Vector3 steering;
+
+        if (followForecastTarget)
+            target += foreCastPrecision * targetVelocity * (Vector3.Distance(transform.position, target) / speed);
 
         // Desired velocity (simply target - currentPosition)
         Vector3 desired = (target - transform.position).normalized * speed;
@@ -138,9 +145,9 @@ public class SteeringEnemy : OptimizedMonoBehaviour
         return ret;
     }
 
-    private Vector3 Escape(Vector3 target, float speed, float steeringForce)
+    private Vector3 Escape(Vector3 target, float speed, float steeringForce, Vector3 targetVelocity)
     {
-        return -Seek(target, speed, steeringForce);
+        return -Seek(target, speed, steeringForce, targetVelocity, escapeForecastPrecision);
     }
 
     /*
@@ -168,10 +175,7 @@ public class SteeringEnemy : OptimizedMonoBehaviour
     public void SetTarget(GameObject toSet)
     {
         currentTarget = toSet.transform.position;
-    }
-    public void SetTarget(Vector3 toSet)
-    {
-        currentTarget = toSet;
+        targetPhysics = toSet.GetComponent<Rigidbody>();
     }
 
     public void SetVelocity(Vector3 toSet)

@@ -22,21 +22,24 @@ public class SteeringEnemyEditor : Editor
     public SerializedProperty prop_allowEscape;
     public SerializedProperty prop_allowWander;
 
-    // follow behaviour
+    // seek behaviour
     public SerializedProperty prop_followMaxSpeed;
     public SerializedProperty prop_followForceMagnitude;
     public SerializedProperty prop_followDistance;
+    public SerializedProperty prop_followForecastTarget;
+    public SerializedProperty prop_followForecastPrecision;
 
     // escape behaviour
     public SerializedProperty prop_escapeMaxSpeed;
     public SerializedProperty prop_escapeForceMagnitude;
     public SerializedProperty prop_escapeMinDistance;
+    public SerializedProperty prop_escapeForecastTarget;
+    public SerializedProperty prop_escapeForecastPrecision;
 
     // wander behaviour
     public SerializedProperty prop_wanderSphereDistance;
     public SerializedProperty prop_wanderSphereRadius;
     public SerializedProperty prop_wanderMaxSpeed;
-    public SerializedProperty prop_wanderDirectionChangeRate;
     public SerializedProperty prop_wanderForceMagnitude;
 
     // Foldout menus
@@ -61,17 +64,20 @@ public class SteeringEnemyEditor : Editor
         prop_escapeMaxSpeed = serializedObject.FindProperty("escapeMaxSpeed");
         prop_escapeForceMagnitude = serializedObject.FindProperty("escapeForceMagnitude");
         prop_escapeMinDistance = serializedObject.FindProperty("escapeMinDistance");
+        prop_escapeForecastTarget = serializedObject.FindProperty("escapeForecastTarget");
+        prop_escapeForecastPrecision = serializedObject.FindProperty("escapeForecastPrecision");
 
         // follow
         prop_followMaxSpeed = serializedObject.FindProperty("followMaxSpeed");
         prop_followForceMagnitude = serializedObject.FindProperty("followForceMagnitude");
         prop_followDistance = serializedObject.FindProperty("followDistance");
+        prop_followForecastTarget = serializedObject.FindProperty("followForecastTarget");
+        prop_followForecastPrecision = serializedObject.FindProperty("followForecastPrecision");
 
         // wander
         prop_wanderSphereDistance = serializedObject.FindProperty("sphereDistance");
         prop_wanderSphereRadius = serializedObject.FindProperty("sphereRadius");
         prop_wanderMaxSpeed = serializedObject.FindProperty("wanderMaxSpeed");
-        prop_wanderDirectionChangeRate = serializedObject.FindProperty("wanderChangeDirectionRate");
         prop_wanderForceMagnitude = serializedObject.FindProperty("wanderForceMagnitude");
     }
 
@@ -105,6 +111,8 @@ public class SteeringEnemyEditor : Editor
                 EditorGUILayout.PropertyField(prop_followMaxSpeed, new GUIContent("Max speed"));
                 EditorGUILayout.PropertyField(prop_followForceMagnitude, new GUIContent("Force magnitude"));
                 EditorGUILayout.PropertyField(prop_followDistance, new GUIContent("Distance"));
+                EditorGUILayout.PropertyField(prop_followForecastTarget, new GUIContent("Foresee target's position"));
+                EditorGUILayout.PropertyField(prop_followForecastPrecision, new GUIContent("Forecast precision"));
             }
         }
 
@@ -118,6 +126,8 @@ public class SteeringEnemyEditor : Editor
                 EditorGUILayout.PropertyField(prop_escapeMaxSpeed, new GUIContent("Max speed"));
                 EditorGUILayout.PropertyField(prop_escapeForceMagnitude, new GUIContent("Force magnitude"));
                 EditorGUILayout.PropertyField(prop_escapeMinDistance, new GUIContent("Escape min distance"));
+                EditorGUILayout.PropertyField(prop_escapeForecastTarget, new GUIContent("Foresee target's position"));
+                EditorGUILayout.PropertyField(prop_escapeForecastPrecision, new GUIContent("Forecast precision"));
             }
         }
 
@@ -131,7 +141,6 @@ public class SteeringEnemyEditor : Editor
                 EditorGUILayout.PropertyField(prop_wanderSphereRadius, new GUIContent("Sphere radius"));
                 EditorGUILayout.PropertyField(prop_wanderSphereDistance, new GUIContent("Sphere distance"));
                 EditorGUILayout.PropertyField(prop_wanderMaxSpeed, new GUIContent("Wander max speed"));
-                EditorGUILayout.PropertyField(prop_wanderDirectionChangeRate, new GUIContent("Direction change rate"));
                 EditorGUILayout.PropertyField(prop_wanderForceMagnitude, new GUIContent("Wander force magnitude"));
             }
         }
