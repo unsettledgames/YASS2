@@ -81,18 +81,18 @@ public class SteeringEnemy : OptimizedMonoBehaviour
         // FOLLOW behaviour
         if (allowFollow)
         {
-            currentVelocity = Seek(target.transform.position, followMaxSpeed, followForceMagnitude, targetPhysics.velocity, followForecastPrecision);
+            currentVelocity = Seek(target.transform.position, followMaxSpeed, followForceMagnitude, targetPhysics.velocity, 0);
             // Taking distance in account
             currentVelocity = Vector3.Lerp(currentVelocity, Vector3.zero, followDistance / distance);
 
             transform.position += currentVelocity * Time.deltaTime;
-
-            Debug.Log("currentVelocity: " + currentVelocity);
+            
         }
 
         // ESCAPE behaviour
         if (allowEscape)
         {
+            Debug.Log("scappo, perfino");
             currentVelocity = Escape(target.transform.position, escapeMaxSpeed, escapeForceMagnitude, targetPhysics.velocity);
             // Taking distance in account
             currentVelocity = Vector3.Lerp(currentVelocity, Vector3.zero, distance / escapeMinDistance);
@@ -137,8 +137,9 @@ public class SteeringEnemy : OptimizedMonoBehaviour
         Vector3 desired = (target - transform.position).normalized * speed;
 
         // Computing steering vector, the difference between the desired and the current velocity.
-        // Clamping by followForceMagnitude to decide how fast the object changes direction
+        // Clamping by steeringForce to decide how fast the object changes direction
         steering = (desired - currentVelocity).normalized * steeringForce;
+
         // Adding steering force to the final vector
         ret = (currentVelocity + steering).normalized * speed;
 
@@ -150,20 +151,6 @@ public class SteeringEnemy : OptimizedMonoBehaviour
         return -Seek(target, speed, steeringForce, targetVelocity, escapeForecastPrecision);
     }
 
-    /*
-    private void Seek(Vector3 target, Vector3 currentVelocity, Vector3 desiredVelocity, float maxSpeed, float distanceFromTarget = 0)
-    {
-        Vector3 finalVelocity;
-
-        // Slow down when you're too near to the target
-        if (Vector3.Distance(transform.position, target) > distanceFromTarget)
-            finalVelocity = Vector3.Lerp(currentVelocity, desiredVelocity * maxSpeed, 0.5f);
-        else
-            finalVelocity = Vector3.Lerp(currentVelocity, Vector3.zero, 0.1f);
-
-        steeringPhysics.velocity = finalVelocity;
-    }*/
-
     private void ClampVelocity(float maxSpeed)
     {
         if (!steeringOverriden)
@@ -174,6 +161,7 @@ public class SteeringEnemy : OptimizedMonoBehaviour
 
     public void SetTarget(GameObject toSet)
     {
+        target = toSet;
         currentTarget = toSet.transform.position;
         targetPhysics = toSet.GetComponent<Rigidbody>();
     }
