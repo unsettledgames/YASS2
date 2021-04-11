@@ -19,6 +19,13 @@ public class SteeringEnemy : OptimizedMonoBehaviour
     public bool allowEscape;
     public bool allowWander;
 
+    [Header("Collision avoidance")]
+    public bool avoidCollisions;
+    [HideInInspector] public float collisionCheckDistance;
+    [HideInInspector] public string collisionTagsToAvoid;
+    [HideInInspector] public float collisionAvoidanceMagnitude;
+    [HideInInspector] public LayerMask collisionLayerMask;
+
     // Follow behaviour attributes
     [HideInInspector] public float followForceMagnitude;
     [HideInInspector] public float followMaxSpeed;
@@ -84,32 +91,49 @@ public class SteeringEnemy : OptimizedMonoBehaviour
             currentVelocity = Seek(target.transform.position, followMaxSpeed, followForceMagnitude, targetPhysics.velocity, 0);
             // Taking distance in account
             currentVelocity = Vector3.Lerp(currentVelocity, Vector3.zero, followDistance / distance);
-
-            transform.position += currentVelocity * Time.deltaTime;
-            
         }
 
         // ESCAPE behaviour
         if (allowEscape)
         {
-            Debug.Log("scappo, perfino");
             currentVelocity = Escape(target.transform.position, escapeMaxSpeed, escapeForceMagnitude, targetPhysics.velocity);
             // Taking distance in account
             currentVelocity = Vector3.Lerp(currentVelocity, Vector3.zero, distance / escapeMinDistance);
-
-            transform.position += currentVelocity * Time.deltaTime;
         }
 
         // WANDER behaviour
         if (allowWander)
         {
-            currentVelocity = Wander() * Time.deltaTime;
-            transform.position += currentVelocity;
+            currentVelocity = Wander();
         }
-        
+
+        // Handling collisions
+        if (avoidCollisions)
+        {
+            currentVelocity += AvoidCollisions();
+        }
+
+        transform.position += currentVelocity * Time.deltaTime;
+
         if (rotate)
             transform.LookAt(transform.position + currentVelocity);
         
+    }
+
+    private Vector3 AvoidCollisions()
+    {
+        // Firing a raycast
+        RaycastHit hit;
+        bool hitSomething = Physics.Raycast(transform.position, transform.forward, out hit, collisionCheckDistance, collisionLayerMask);
+
+        if (hitSomething)
+        {
+            Vector3 avoidanceForce = (transform.position + transform.forward * collisionCheckDistance) - hit.collider.transform.position;
+        
+            return avoidanceForce.normalized * collisionAvoidanceMagnitude;
+        }
+
+        return Vector3.zero;
     }
 
     private Vector3 Wander()
