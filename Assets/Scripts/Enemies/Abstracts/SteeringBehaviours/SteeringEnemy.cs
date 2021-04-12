@@ -7,6 +7,18 @@ public enum SteeringBehaviour
     Static, Follow
 }
 
+public class CollisionObject
+{
+    public GameObject gameObject;
+    public float radius;
+
+    public CollisionObject(GameObject go, float r)
+    {
+        this.gameObject = go;
+        this.radius = r;
+    }
+}
+
 public class SteeringEnemy : OptimizedMonoBehaviour
 {
     [Header("General properties")]
@@ -59,7 +71,7 @@ public class SteeringEnemy : OptimizedMonoBehaviour
     protected Vector3 currentWanderDisplacement;
 
     protected Vector3 currentCollisionForce;
-    protected GameObject mostDangerousObject;
+    protected List<CollisionObject> objectsToAvoid;
     protected float collisionRadius;
     protected float noCollisionLerp;
 
@@ -84,6 +96,7 @@ public class SteeringEnemy : OptimizedMonoBehaviour
 
         noCollisionLerp = 0;
         currentCollisionForce = Vector3.zero;
+        objectsToAvoid = new List<CollisionObject>();
 
         // Applying start velocity if the behaviour requires it
         if (allowWander)
@@ -137,33 +150,42 @@ public class SteeringEnemy : OptimizedMonoBehaviour
         // Firing a raycast
         RaycastHit hit;
         bool hitSomething = Physics.Raycast(transform.position, transform.forward, out hit, collisionCheckDistance, collisionLayerMask);
+        List<CollisionObject> copyList = new List<CollisionObject>(objectsToAvoid);
+        Vector3 ret = Vector3.zero;
 
         if (hitSomething)
         {
-            mostDangerousObject = hit.collider.gameObject;
-            collisionRadius = Vector3.Distance(mostDangerousObject.transform.position, hit.point);
+            // Creating an object containing info about the thing to avoid
+            CollisionObject toAdd = new CollisionObject(
+                    hit.collider.gameObject,
+                    Vector3.Distance(hit.collider.gameObject.transform.position, hit.point
+                ));
+            // Adding it to the list if I haven't taken it into consideration yet
+            if (!objectsToAvoid.Contains(toAdd))
+                objectsToAvoid.Add(toAdd);
         }
 
-        if (mostDangerousObject != null)
+        // Adding forces for each object to avoid
+        for (int i=0; i<copyList.Count; i++)
         {
-            currentCollisionForce = transform.position + transform.forward * collisionCheckDistance - mostDangerousObject.transform.position;
+            GameObject currObject = copyList[i].gameObject;
+            float currRadius = copyList[i].radius;
 
-            Debug.DrawLine(transform.position, mostDangerousObject.transform.position, Color.red);
-            Debug.DrawLine(transform.position, transform.position + transform.forward * collisionCheckDistance, Color.blue);
-            Debug.DrawLine(transform.position, transform.position + currentCollisionForce.normalized * collisionAvoidanceMagnitude);
-
+            currentCollisionForce = transform.position + transform.forward * collisionCheckDistance - currObject.transform.position;
             // Normalize it and scale it by the force magnitude
-            currentCollisionForce = currentCollisionForce.normalized * collisionAvoidanceMagnitude * 
+            currentCollisionForce = currentCollisionForce.normalized * collisionAvoidanceMagnitude *
             // Increase the force depending on how near the enemy is to the object to avoid
-            ((collisionCheckDistance/2) / (Mathf.Abs(collisionRadius - 
-            (Vector3.Distance(transform.position, mostDangerousObject.transform.position)))));
+            ((collisionCheckDistance / 2) / (Mathf.Abs(currRadius -
+            (Vector3.Distance(transform.position, currObject.transform.position)))));
 
-            // If the contribute of the collision vector is smol, I've avoided the obstacle
+            ret += currentCollisionForce;
+
+            // If the contribute of the collision vector is smol, I've avoided the obstacle and I can remove it from the list
             if (Vector3.Distance(currentCollisionForce, Vector3.zero) < 0.5f)
             {
-                mostDangerousObject = null;
+                objectsToAvoid.Remove(copyList[i]);
             }
-        }        
+        }
 
         return currentCollisionForce;
     }
