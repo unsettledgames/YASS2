@@ -31,6 +31,9 @@ public class SteeringEnemyEditor : Editor
     public SerializedProperty prop_collisionLayerMask;
     public SerializedProperty prop_collisionAvoidanceMagnitude;
 
+    // static velocity
+    public SerializedProperty prop_staticVelocity;
+
     // seek behaviour
     public SerializedProperty prop_followMaxSpeed;
     public SerializedProperty prop_followForceMagnitude;
@@ -71,6 +74,9 @@ public class SteeringEnemyEditor : Editor
         prop_allowFollow = serializedObject.FindProperty("allowFollow");
         prop_allowEscape = serializedObject.FindProperty("allowEscape");
         prop_allowWander = serializedObject.FindProperty("allowWander");
+
+        // static
+        prop_staticVelocity = serializedObject.FindProperty("staticVelocity");
 
         // collision
         prop_collisionCheckDistance = serializedObject.FindProperty("collisionCheckDistance");
@@ -116,16 +122,21 @@ public class SteeringEnemyEditor : Editor
         {
             showCollisionOptions = EditorGUILayout.Foldout(showCollisionOptions, "COLLISION options");
 
-            EditorGUILayout.PropertyField(prop_collisionCheckDistance, new GUIContent("Collisions check distance"));
-            EditorGUILayout.PropertyField(prop_collisionLayerMask, new GUIContent("Collisions layer mask"));
-            EditorGUILayout.PropertyField(prop_collisionTagsToAvoid, new GUIContent("Collisions tags to avoid"));
-            EditorGUILayout.PropertyField(prop_collisionAvoidanceMagnitude, new GUIContent("Collision avoidance magnitude"));
+            if (showCollisionOptions)
+            {
+                EditorGUILayout.PropertyField(prop_collisionCheckDistance, new GUIContent("Collisions check distance"));
+                EditorGUILayout.PropertyField(prop_collisionLayerMask, new GUIContent("Collisions layer mask"));
+                EditorGUILayout.PropertyField(prop_collisionTagsToAvoid, new GUIContent("Collisions tags to avoid"));
+                EditorGUILayout.PropertyField(prop_collisionAvoidanceMagnitude, new GUIContent("Collision avoidance magnitude"));
+            }
         }
         
         if (allowStatic)
         {
             // Creating foldout menu
             showStaticOptions = EditorGUILayout.Foldout(showStaticOptions, "STATIC behaviour options");
+
+            EditorGUILayout.PropertyField(prop_staticVelocity, new GUIContent("Static velocity"));
         }
 
         if (allowFollow)

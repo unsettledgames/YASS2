@@ -26,6 +26,9 @@ public class SteeringEnemy : OptimizedMonoBehaviour
     [HideInInspector] public float collisionAvoidanceMagnitude;
     [HideInInspector] public LayerMask collisionLayerMask;
 
+    // Static behaviour
+    [HideInInspector] public Vector3 staticVelocity;
+
     // Follow behaviour attributes
     [HideInInspector] public float followForceMagnitude;
     [HideInInspector] public float followMaxSpeed;
@@ -76,14 +79,16 @@ public class SteeringEnemy : OptimizedMonoBehaviour
 
         // Applying start velocity if the behaviour requires it
         if (allowWander)
-        {
             steeringPhysics.velocity = startVelocity * wanderMaxSpeed;
-        }
     }
 
     protected void Update()
     {
         float distance = Vector3.Distance(transform.position, target.transform.position);
+
+        // STATIC velocity behaviour
+        if (allowStatic)
+            currentVelocity = staticVelocity;
 
         // FOLLOW behaviour
         if (allowFollow)
@@ -117,7 +122,6 @@ public class SteeringEnemy : OptimizedMonoBehaviour
 
         if (rotate)
             transform.LookAt(transform.position + currentVelocity);
-        
     }
 
     private Vector3 AvoidCollisions()
@@ -128,11 +132,17 @@ public class SteeringEnemy : OptimizedMonoBehaviour
 
         if (hitSomething)
         {
-            Vector3 avoidanceForce = (transform.position + transform.forward * collisionCheckDistance) - hit.collider.transform.position;
-        
-            return avoidanceForce.normalized * collisionAvoidanceMagnitude;
+            Vector3 avoidanceForce = hit.normal;
+
+            Debug.DrawLine(transform.position, hit.point, Color.green);
+            Debug.DrawLine(transform.position, transform.position + avoidanceForce * 10, Color.red);
+
+            return avoidanceForce.normalized * collisionAvoidanceMagnitude * (collisionCheckDistance / Vector3.Distance(transform.position, hit.point));
         }
 
+        // Non Vector3.zero, ma interpolare tra il precedente vettore di collisioni e Vector3.zero (aumento di Time.deltaTime 
+        // il valore usato per lerpare finché non arrivo fino a 1. Dentro if (hitSomething) resetto quel valore (oppure sarebbe
+        // interessante sottrarre Time.deltaTime per averlo ancora più smooth ma non so cosa succede onestamente
         return Vector3.zero;
     }
 
