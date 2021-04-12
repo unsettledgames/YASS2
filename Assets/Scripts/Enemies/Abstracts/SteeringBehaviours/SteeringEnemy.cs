@@ -58,6 +58,11 @@ public class SteeringEnemy : OptimizedMonoBehaviour
     protected Vector3 currentVelocity;
     protected Vector3 currentWanderDisplacement;
 
+    protected Vector3 currentCollisionForce;
+    protected GameObject mostDangerousObject;
+    protected float collisionRadius;
+    protected float noCollisionLerp;
+
     private Vector3 rotationAngle;
     private float wanderAngleChange;
     private Rigidbody targetPhysics;
@@ -76,6 +81,9 @@ public class SteeringEnemy : OptimizedMonoBehaviour
 
         currentWanderDisplacement = (new Vector3(Random.Range(-1f, 1f), Random.Range(-1f, 1f), Random.Range(-1f, 1f)).normalized).normalized * wanderMaxSpeed;
         rotationAngle = new Vector3(Random.Range(-1f, 1f), Random.Range(-1f, 1f), Random.Range(-1f, 1f)).normalized * wanderForceMagnitude;
+
+        noCollisionLerp = 0;
+        currentCollisionForce = Vector3.zero;
 
         // Applying start velocity if the behaviour requires it
         if (allowWander)
@@ -126,24 +134,43 @@ public class SteeringEnemy : OptimizedMonoBehaviour
 
     private Vector3 AvoidCollisions()
     {
+        /* Here's an idea: use the raycast to find the nearest object and keep the reference until the returned vector 
+         * isn't Vector3.zero; if a different object is returned by the raycast, work depending on that new object.
+         * 
+         * With "work" I mean orbiting around that object until the old velocity isn't restored
+         */ 
+
         // Firing a raycast
         RaycastHit hit;
         bool hitSomething = Physics.Raycast(transform.position, transform.forward, out hit, collisionCheckDistance, collisionLayerMask);
 
         if (hitSomething)
         {
-            Vector3 avoidanceForce = hit.normal;
-
-            Debug.DrawLine(transform.position, hit.point, Color.green);
-            Debug.DrawLine(transform.position, transform.position + avoidanceForce * 10, Color.red);
-
-            return avoidanceForce.normalized * collisionAvoidanceMagnitude * (collisionCheckDistance / Vector3.Distance(transform.position, hit.point));
+            mostDangerousObject = hit.collider.gameObject;
+            collisionRadius = Vector3.Distance(mostDangerousObject.transform.position, hit.point);
         }
 
-        // Non Vector3.zero, ma interpolare tra il precedente vettore di collisioni e Vector3.zero (aumento di Time.deltaTime 
-        // il valore usato per lerpare finché non arrivo fino a 1. Dentro if (hitSomething) resetto quel valore (oppure sarebbe
-        // interessante sottrarre Time.deltaTime per averlo ancora più smooth ma non so cosa succede onestamente
-        return Vector3.zero;
+        if (mostDangerousObject != null)
+        {
+            currentCollisionForce = transform.position + transform.forward * collisionCheckDistance - mostDangerousObject.transform.position;
+
+            Debug.DrawLine(transform.position, mostDangerousObject.transform.position, Color.red);
+            Debug.DrawLine(transform.position, transform.position + transform.forward * collisionCheckDistance, Color.blue);
+            Debug.DrawLine(transform.position, transform.position + currentCollisionForce.normalized * collisionAvoidanceMagnitude);
+
+            Debug.Log("Moltiplicatore: " + (1 / Mathf.Abs((collisionRadius - (Vector3.Distance(transform.position, mostDangerousObject.transform.position))))));
+
+            currentCollisionForce = currentCollisionForce.normalized * collisionAvoidanceMagnitude * 
+                (10 / (Mathf.Abs(collisionRadius - (Vector3.Distance(transform.position, mostDangerousObject.transform.position)))));
+
+            // If the contribute of the collision vector is smol, I've avoided the obstacle
+            if (Vector3.Distance(currentCollisionForce, Vector3.zero) < 0.5f)
+            {
+                mostDangerousObject = null;
+            }
+        }        
+
+        return currentCollisionForce;
     }
 
     private Vector3 Wander()
