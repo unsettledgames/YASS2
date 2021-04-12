@@ -134,12 +134,6 @@ public class SteeringEnemy : OptimizedMonoBehaviour
 
     private Vector3 AvoidCollisions()
     {
-        /* Here's an idea: use the raycast to find the nearest object and keep the reference until the returned vector 
-         * isn't Vector3.zero; if a different object is returned by the raycast, work depending on that new object.
-         * 
-         * With "work" I mean orbiting around that object until the old velocity isn't restored
-         */ 
-
         // Firing a raycast
         RaycastHit hit;
         bool hitSomething = Physics.Raycast(transform.position, transform.forward, out hit, collisionCheckDistance, collisionLayerMask);
@@ -158,10 +152,11 @@ public class SteeringEnemy : OptimizedMonoBehaviour
             Debug.DrawLine(transform.position, transform.position + transform.forward * collisionCheckDistance, Color.blue);
             Debug.DrawLine(transform.position, transform.position + currentCollisionForce.normalized * collisionAvoidanceMagnitude);
 
-            Debug.Log("Moltiplicatore: " + (1 / Mathf.Abs((collisionRadius - (Vector3.Distance(transform.position, mostDangerousObject.transform.position))))));
-
+            // Normalize it and scale it by the force magnitude
             currentCollisionForce = currentCollisionForce.normalized * collisionAvoidanceMagnitude * 
-                (10 / (Mathf.Abs(collisionRadius - (Vector3.Distance(transform.position, mostDangerousObject.transform.position)))));
+            // Increase the force depending on how near the enemy is to the object to avoid
+            ((collisionCheckDistance/2) / (Mathf.Abs(collisionRadius - 
+            (Vector3.Distance(transform.position, mostDangerousObject.transform.position)))));
 
             // If the contribute of the collision vector is smol, I've avoided the obstacle
             if (Vector3.Distance(currentCollisionForce, Vector3.zero) < 0.5f)
