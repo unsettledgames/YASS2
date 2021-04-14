@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
+using SteeringBehaviours;
 
 /** WHEN ADDING A BEHAVIOUR:
  * 
