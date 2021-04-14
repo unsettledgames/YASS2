@@ -119,23 +119,6 @@ namespace SteeringBehaviours
             // Applying start velocity if the behaviour requires it
             if (allowWander)
                 steeringPhysics.velocity = startVelocity * wanderMaxSpeed;
-
-            Test();
-        }
-
-        private void Test()
-        {
-            List<PathNode> pathList = new List<PathNode>();
-            Path path;
-
-            for (int i=0; i<pathObjects.Length; i++)
-            {
-                pathList.Add(new PathNode(pathObjects[i].transform.position, 8f));
-            }
-
-            path = new Path(pathList, false, true);
-
-            StartPath(path);
         }
 
         protected void Update()
@@ -157,9 +140,8 @@ namespace SteeringBehaviours
                     else
                         isFollowingPath = false;
                 }
-
-                Debug.Log("Relative velocity: " + transform.InverseTransformPoint(currentVelocity) + " is first or last: " + currentPath.Reversed());
-
+                
+                // Increasing magnitude if I have to turn right back
                 if (transform.InverseTransformPoint(currentVelocity).x > 0 && currentPath.Reversed())
                     followForceMagnitude = startFollowMagnitude * 1.5f;
 
