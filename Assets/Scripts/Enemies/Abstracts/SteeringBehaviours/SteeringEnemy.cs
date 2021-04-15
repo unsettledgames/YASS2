@@ -4,6 +4,11 @@ using UnityEngine;
 
 namespace SteeringBehaviours
 {
+    public enum SteeringBehaviour
+    {
+        Seek, Escape, Wander, Static
+    }
+
     public class CollisionObject
     {
         public GameObject gameObject;
@@ -89,6 +94,8 @@ namespace SteeringBehaviours
         protected GameObject tempTargetObject;
         protected bool isFollowingPath;
 
+        protected SteeringBehaviour currentBehaviour;
+
         private float startFollowMagnitude;
 
         // Start is called before the first frame update
@@ -116,6 +123,15 @@ namespace SteeringBehaviours
             tempTargetObject = new GameObject();
 
             startFollowMagnitude = followForceMagnitude;
+
+            if (allowFollow)
+                currentBehaviour = SteeringBehaviour.Seek;
+            else if (allowEscape)
+                currentBehaviour = SteeringBehaviour.Escape;
+            else if (allowWander)
+                currentBehaviour = SteeringBehaviour.Wander;
+            else
+                currentBehaviour = SteeringBehaviour.Static;
 
             // Applying start velocity if the behaviour requires it
             if (allowWander)
@@ -152,40 +168,69 @@ namespace SteeringBehaviours
             // Otherwise I handle the different behaviours
             else
             {
-                // STATIC velocity behaviour
-                if (allowStatic)
-                    currentVelocity = staticVelocity;
-
-                // FOLLOW behaviour
-                if (allowFollow)
+                switch (currentBehaviour)
                 {
-                    if (target == null && !allowWander)
-                    {
-                        Debug.LogError("The target has been destroyed, but no wander options have been specified. If you " +
-                            "were trying to create a queue or a swarm, please setup a backup wander behaviour, or make the" +
-                            "swarm or queue follow an undestroyable target.");
-                    }
-                    else if (target == null && allowWander)
-                    {
-                        allowFollow = false;
-                    }
-                    currentVelocity = Seek(target.transform.position, followMaxSpeed, followForceMagnitude, targetPhysics.velocity, followForecastPrecision);
-                    // Taking distance in account
-                    currentVelocity = Vector3.Lerp(currentVelocity, Vector3.zero, followDistance / distance);
-                }
+                    // FOLLOW behaviour
+                    case SteeringBehaviour.Seek:
+                        if (allowFollow)
+                        {
+                            if (target == null && !allowWander)
+                            {
+                                Debug.LogError("The target has been destroyed, but no wander options have been specified. If you " +
+                                    "were trying to create a queue or a swarm, please setup a backup wander behaviour, or make the" +
+                                    "swarm or queue follow an undestroyable target.");
+                            }
+                            else if (target == null && allowWander)
+                            {
+                                allowFollow = false;
+                            }
+                            currentVelocity = Seek(target.transform.position, followMaxSpeed, followForceMagnitude, targetPhysics.velocity, followForecastPrecision);
+                            // Taking distance in account
+                            currentVelocity = Vector3.Lerp(currentVelocity, Vector3.zero, followDistance / distance);
+                        }
+                        else
+                        {
+                            Debug.LogError("Requested Seek behaviour, but the seek settings haven't been set");
+                        }
 
-                // ESCAPE behaviour
-                if (allowEscape)
-                {
-                    currentVelocity = Escape(target.transform.position, escapeMaxSpeed, escapeForceMagnitude, targetPhysics.velocity);
-                    // Taking distance in account
-                    currentVelocity = Vector3.Lerp(currentVelocity, Vector3.zero, distance / escapeMinDistance);
-                }
+                        break;
 
-                // WANDER behaviour
-                if (allowWander)
-                {
-                    currentVelocity = Wander();
+                    // ESCAPE behaviour
+                    case SteeringBehaviour.Escape:
+                        if (allowEscape)
+                        {
+                            currentVelocity = Escape(target.transform.position, escapeMaxSpeed, escapeForceMagnitude, targetPhysics.velocity);
+                            // Taking distance in account
+                            currentVelocity = Vector3.Lerp(currentVelocity, Vector3.zero, distance / escapeMinDistance);
+                        }
+                        else
+                        {
+                            Debug.LogError("Requested Escape behaviour, but the escape settings haven't been set");
+                        }
+                        break;
+
+                    // WANDER behaviour
+                    case SteeringBehaviour.Wander:
+                        if (allowWander)
+                        {
+                            currentVelocity = Wander();
+                        }
+                        else
+                        {
+                            Debug.LogError("Requested Wander behaviour, but the escape settings haven't been set");
+                        }
+                        break;
+
+                    // STATIC velocity behaviour
+                    case SteeringBehaviour.Static:
+                        if (allowStatic)
+                            currentVelocity = staticVelocity;
+                        else
+                            Debug.LogError("Requested Static behaviour, but the escape settings haven't been set");
+                        break;
+
+                    default:
+                        break;
                 }
             }
 
@@ -393,6 +438,11 @@ namespace SteeringBehaviours
         public void SetSteering()
         {
             steeringOverriden = false;
+        }
+
+        public void SetBehaviour(SteeringBehaviour toSet)
+        {
+            currentBehaviour = toSet;
         }
     }
 }
