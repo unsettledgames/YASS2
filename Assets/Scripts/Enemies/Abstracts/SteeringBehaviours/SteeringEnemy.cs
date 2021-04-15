@@ -26,6 +26,7 @@ namespace SteeringBehaviours
         [Header("General properties")]
         public GameObject target;
         public bool rotate;
+        [HideInInspector] public bool towardsTarget = false;
 
         [Header("Behaviours")]
         public bool allowStatic;
@@ -147,8 +148,6 @@ namespace SteeringBehaviours
 
                 currentVelocity = Seek(tempTargetObject.transform.position, followMaxSpeed, followForceMagnitude,
                     Vector3.zero, 0);
-
-                Debug.DrawLine(transform.position, tempTargetObject.transform.position);
             }
             // Otherwise I handle the different behaviours
             else
@@ -160,7 +159,17 @@ namespace SteeringBehaviours
                 // FOLLOW behaviour
                 if (allowFollow)
                 {
-                    currentVelocity = Seek(target.transform.position, followMaxSpeed, followForceMagnitude, targetPhysics.velocity, 0);
+                    if (target == null && !allowWander)
+                    {
+                        Debug.LogError("The target has been destroyed, but no wander options have been specified. If you " +
+                            "were trying to create a queue or a swarm, please setup a backup wander behaviour, or make the" +
+                            "swarm or queue follow an undestroyable target.");
+                    }
+                    else if (target == null && allowWander)
+                    {
+                        allowFollow = false;
+                    }
+                    currentVelocity = Seek(target.transform.position, followMaxSpeed, followForceMagnitude, targetPhysics.velocity, followForecastPrecision);
                     // Taking distance in account
                     currentVelocity = Vector3.Lerp(currentVelocity, Vector3.zero, followDistance / distance);
                 }
@@ -182,16 +191,17 @@ namespace SteeringBehaviours
 
             // Handling collisions
             if (avoidCollisions)
-            {
                 currentVelocity += AvoidCollisions();
-            }
 
             // Applying the velocity via Euler integration
             transform.position += currentVelocity * Time.deltaTime;
 
             // Rotating the object
             if (rotate)
-                transform.LookAt(transform.position + currentVelocity);
+                if (!towardsTarget)
+                    transform.LookAt(transform.position + currentVelocity);
+                else
+                    transform.LookAt(target.transform.position);
         }
 
         /**
@@ -207,6 +217,8 @@ namespace SteeringBehaviours
 
             if (hitSomething)
             {
+                if (hit.collider.name.Contains("Player") && this.name.Contains("Leader"))
+                    Debug.Log("Hit player");
                 // Creating an object containing info about the thing to avoid
                 CollisionObject toAdd = new CollisionObject(
                         hit.collider.gameObject,

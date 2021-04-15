@@ -23,6 +23,10 @@ public class SteeringEnemyEditor : Editor
     public SerializedProperty prop_allowEscape;
     public SerializedProperty prop_allowWander;
 
+    [Header("Rotation")]
+    public SerializedProperty prop_rotate;
+    public SerializedProperty prop_rotateTowardsTarget;
+
     [Header("Collision avoidance")]
     public SerializedProperty prop_avoidCollisions;
 
@@ -76,6 +80,9 @@ public class SteeringEnemyEditor : Editor
         prop_allowEscape = serializedObject.FindProperty("allowEscape");
         prop_allowWander = serializedObject.FindProperty("allowWander");
 
+        prop_rotate = serializedObject.FindProperty("rotate");
+        prop_rotateTowardsTarget = serializedObject.FindProperty("towardsTarget");
+
         // static
         prop_staticVelocity = serializedObject.FindProperty("staticVelocity");
 
@@ -111,6 +118,15 @@ public class SteeringEnemyEditor : Editor
         // Unity editor stuff
         base.OnInspectorGUI();
         serializedObject.Update();
+
+        if (prop_rotate.boolValue)
+        {
+            if (prop_rotateTowardsTarget.boolValue)
+                EditorGUILayout.PropertyField(prop_rotateTowardsTarget, new GUIContent("Rotate towards velocity"));   
+            else
+                EditorGUILayout.PropertyField(prop_rotateTowardsTarget, new GUIContent("Rotate towards target"));
+        }
+            
 
         bool avoidCollisions = prop_avoidCollisions.boolValue;
         // Getting the behaviour values
