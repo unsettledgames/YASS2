@@ -8,8 +8,9 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: TestPlanetMaterial
-  m_Shader: {fileID: 46, guid: 0000000000000000f000000000000000, type: 0}
-  m_ShaderKeywords: _GLOSSYREFLECTIONS_OFF _SPECULARHIGHLIGHTS_OFF
+  m_Shader: {fileID: 4800000, guid: 543a72c43ae674441b36c43b80402166, type: 3}
+  m_ShaderKeywords: _DETAIL_MULX2 _GLOSSYREFLECTIONS_OFF _NORMALMAP _PARALLAXMAP
+    _SPECULARHIGHLIGHTS_OFF
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
@@ -20,59 +21,88 @@ Material:
     serializedVersion: 3
     m_TexEnvs:
     - _BumpMap:
+        m_Texture: {fileID: 2800000, guid: 19bc03ccf4b0cec47aec901c6c57d8f9, type: 3}
+        m_Scale: {x: 8, y: 8}
+        m_Offset: {x: 0, y: 0}
+    - _CityLightMap:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _CloudMap:
+        m_Texture: {fileID: 2800000, guid: fe43cd2766b6f5341b9e5bfb6723112b, type: 3}
+        m_Scale: {x: 2, y: 2}
         m_Offset: {x: 0, y: 0}
     - _DetailAlbedoMap:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
+        m_Texture: {fileID: 2800000, guid: 85abb29d9ea43d64c85530e220b44266, type: 3}
+        m_Scale: {x: 16, y: 16}
         m_Offset: {x: 0, y: 0}
     - _DetailMask:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 2800000, guid: 85abb29d9ea43d64c85530e220b44266, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _DetailNormalMap:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 2800000, guid: 19bc03ccf4b0cec47aec901c6c57d8f9, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _EmissionMap:
         m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
+        m_Scale: {x: 2, y: 2}
+        m_Offset: {x: 0, y: 0}
+    - _HeightMap:
+        m_Texture: {fileID: 2800000, guid: 0f9e43333a6546449816844a205872de, type: 3}
+        m_Scale: {x: 8, y: 8}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
-        m_Texture: {fileID: 2800000, guid: f5a5135fd2ea45648aaca7d609f39789, type: 3}
-        m_Scale: {x: 1, y: 1}
+        m_Texture: {fileID: 2800000, guid: 85abb29d9ea43d64c85530e220b44266, type: 3}
+        m_Scale: {x: 8, y: 8}
         m_Offset: {x: 0, y: 0}
     - _MetallicGlossMap:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _OcclusionMap:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 2800000, guid: 3ae1297bbf019b04d85f59c3998beed8, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _ParallaxMap:
+        m_Texture: {fileID: 2800000, guid: 0f9e43333a6546449816844a205872de, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _SpecularMap:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Floats:
+    - _AtmosphereDensity: 2
     - _BumpScale: 1
+    - _CityLightIntensity: 0
+    - _CloudMapSpecularity: 1
+    - _CloudPanSpeed: 0.2
     - _Cutoff: 0.5
     - _DetailNormalMapScale: 1
     - _DstBlend: 0
     - _GlossMapScale: 1
-    - _Glossiness: 0
+    - _Glossiness: 1
     - _GlossyReflections: 0
+    - _HeightmapIntensity: 0
+    - _LightStretch: 0.5
     - _Metallic: 0
     - _Mode: 0
+    - _NormalMapIntensity: 1
     - _OcclusionStrength: 1
-    - _Parallax: 0.02
+    - _Parallax: 0.08
+    - _Smoothness: 0.51
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 0
+    - _SpecularMapIntensity: 0
     - _SrcBlend: 1
     - _UVSec: 0
     - _ZWrite: 1
     m_Colors:
-    - _Color: {r: 1, g: 1, b: 1, a: 1}
+    - _AtmosphereColor: {r: 0.9811321, g: 0.9111632, b: 0.5322179, a: 1}
+    - _CityLightColor: {r: 1, g: 1, b: 1, a: 1}
+    - _CloudColor: {r: 0.4433962, g: 0.43323302, b: 0.2949003, a: 1}
+    - _Color: {r: 1, g: 0.77826965, b: 0.5330188, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
+    - _TextureColor: {r: 1, g: 0.45837566, b: 0.33490568, a: 1}
   m_BuildTextureStacks: []
