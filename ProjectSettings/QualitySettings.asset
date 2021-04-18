@@ -189,7 +189,7 @@ QualitySettings:
   - serializedVersion: 2
     name: Ultra
     pixelLightCount: 32
-    shadows: 2
+    shadows: 1
     shadowResolution: 1
     shadowProjection: 0
     shadowCascades: 4
@@ -206,7 +206,7 @@ QualitySettings:
     softVegetation: 1
     realtimeReflectionProbes: 1
     billboardsFaceCameraPosition: 1
-    vSyncCount: 0
+    vSyncCount: 1
     lodBias: 2
     maximumLODLevel: 0
     streamingMipmapsActive: 0

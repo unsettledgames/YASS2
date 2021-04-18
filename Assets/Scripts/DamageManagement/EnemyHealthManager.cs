@@ -35,7 +35,7 @@ public class EnemyHealthManager : OptimizedMonoBehaviour
         }
     }
 
-    public void GiveDamage(float damage)
+    public void TakeDamage(float damage)
     {
         this.currentHealth -= damage;
         if (currentHealth <= 0)

@@ -8,6 +8,7 @@ public class AsteroidField : MonoBehaviour
     public float instantiateDistance;
     public float fieldRadius;
     public float nAsteroids;
+    public float scaleNoise = 1.5f;
 
     // Start is called before the first frame update
     void Start()
@@ -30,7 +31,11 @@ public class AsteroidField : MonoBehaviour
             rot.y = Random.Range(0, 360);
             rot.z = Random.Range(0, 360);
 
-            Instantiate(toInstantiate[Random.Range(0, toInstantiate.Length)], pos, Quaternion.Euler(rot));
+            GameObject asteroid = Instantiate(toInstantiate[Random.Range(0, toInstantiate.Length)], pos, Quaternion.Euler(rot));
+
+            float scaleMul = Random.Range(1f, scaleNoise);
+
+            asteroid.transform.localScale *= scaleMul;
 
             Debug.Log(i);
 

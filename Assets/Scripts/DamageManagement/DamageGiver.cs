@@ -5,6 +5,7 @@ using UnityEngine;
 public class DamageGiver : MonoBehaviour
 {
     public float damage;
+    public Vector3 knockbackForce;
 
     private bool isPlayer;
     // Start is called before the first frame update
@@ -26,9 +27,15 @@ public class DamageGiver : MonoBehaviour
             EnemyHealthManager ehm = other.GetComponent<EnemyHealthManager>();
             
             if (ehm != null)
-                ehm.GiveDamage(damage);
-
-            Destroy(this.gameObject);
+                ehm.TakeDamage(damage);            
         }
+        else
+        {
+            PlayerHealthManager phm = FrequentlyAccessed.Instance.player.GetComponent<PlayerHealthManager>();
+            
+            phm.TakeDamage(damage, transform.position, knockbackForce);
+        }
+
+        Destroy(this.gameObject);
     }
 }
