@@ -24,6 +24,8 @@ public class PlayerHealthManager : MonoBehaviour
 
     public void TakeDamage(float damage, Vector3 damagePosition, Vector3 knockbackForce)
     {
+        Debug.Log("Called");
+
         currentHealth -= damage;
     }
 

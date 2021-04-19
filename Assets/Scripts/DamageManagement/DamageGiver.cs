@@ -6,6 +6,7 @@ public class DamageGiver : MonoBehaviour
 {
     public float damage;
     public Vector3 knockbackForce;
+    public bool destroy = true;
 
     private bool isPlayer;
     // Start is called before the first frame update
@@ -29,13 +30,16 @@ public class DamageGiver : MonoBehaviour
             if (ehm != null)
                 ehm.TakeDamage(damage);            
         }
-        else
+        else if (other.tag.Contains("Player"))
         {
+            Debug.Log("Hit " + other.name);
             PlayerHealthManager phm = FrequentlyAccessed.Instance.player.GetComponent<PlayerHealthManager>();
             
-            phm.TakeDamage(damage, transform.position, knockbackForce);
+            if (phm != null)
+                phm.TakeDamage(damage, transform.position, knockbackForce);
         }
 
-        Destroy(this.gameObject);
+        if (destroy)
+            Destroy(this.gameObject);
     }
 }

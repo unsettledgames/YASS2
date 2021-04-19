@@ -9,14 +9,18 @@ public class MineAI : OptimizedMonoBehaviour
     public float explodeRadius;
     // Time you have to stay in the area to make the mine explode
     public float explodeTime;
+    // Speed of light expansion
+    public float lightSpeed;
 
     private float nextExplodeTime;
     private GameObject player;
+    private Light light;
     private SphereCollider collider;
 
     // Start is called before the first frame update
     void Start()
     {
+        light = GetComponentInChildren<Light>();
         player = FrequentlyAccessed.Instance.player;
         collider = GetComponent<SphereCollider>();
 
@@ -29,27 +33,36 @@ public class MineAI : OptimizedMonoBehaviour
     {
         float distance = Vector3.Distance(transform.position, player.transform.position);
 
-        Debug.Log("Distanza: " + distance);
-
         if (distance > explodeRadius)
         {
-            nextExplodeTime = Mathf.Infinity;
+            nextExplodeTime = -1;
         }
-        else if (nextExplodeTime == Mathf.Infinity)
+        else if (nextExplodeTime < 0)
         {
-            nextExplodeTime = Time.deltaTime + explodeTime;
+            nextExplodeTime = Time.time + explodeTime;
         }
         else if (Time.time >= nextExplodeTime)
         {
-            Explode();
+            StartCoroutine(Explode());
         }
+
+        if (nextExplodeTime > 0)
+            light.range += Time.deltaTime * lightSpeed;
+        else if (light.range > 0)
+            light.range -= Time.deltaTime * lightSpeed;
     }
 
-    private void Explode()
+    private IEnumerator Explode()
     {
+        Debug.Log("esplodo");
+
         collider.radius = explodeRadius;
         collider.enabled = true;
 
+        yield return new WaitForSeconds(0.1f);
+
         GetComponent<EnemyHealthManager>().TakeDamage(200);
+
+        yield return null;
     }
 }

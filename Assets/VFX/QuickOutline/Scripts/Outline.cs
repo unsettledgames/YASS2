@@ -88,8 +88,6 @@ public class Outline : MonoBehaviour {
             renderers = GetComponentsInChildren<Renderer>();
         else
             renderers = GetComponents<Renderer>();
-            
-
 
     // Instantiate outline materials
     outlineMaskMaterial = Instantiate(Resources.Load<Material>(@"Materials/OutlineMask"));
