@@ -353,7 +353,6 @@ MonoBehaviour:
   - {fileID: 2746130058158584518, guid: 368e911b4bceb544085c0207ea25e5ba, type: 3}
   - {fileID: 1797448692007430590, guid: b034ecab16d2817418981e94d279b077, type: 3}
   - {fileID: 5088785953716078452, guid: 3295329690a9dda438fc70b551434968, type: 3}
-  instantiateDistance: 0
   fieldRadius: 200
   nAsteroids: 250
   scaleNoise: 1.5
@@ -802,6 +801,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Mine (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 8096939110837978621, guid: 80ebaa16aa1f15b4f9c0f38d8936fb5c, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8869218879164342087, guid: 80ebaa16aa1f15b4f9c0f38d8936fb5c, type: 3}
       propertyPath: m_LocalPosition.x
       value: 44.6
@@ -870,6 +873,10 @@ PrefabInstance:
     - target: {fileID: 8096939110837978621, guid: 80ebaa16aa1f15b4f9c0f38d8936fb5c, type: 3}
       propertyPath: m_Name
       value: Mine (4)
+      objectReference: {fileID: 0}
+    - target: {fileID: 8096939110837978621, guid: 80ebaa16aa1f15b4f9c0f38d8936fb5c, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8869218879164342087, guid: 80ebaa16aa1f15b4f9c0f38d8936fb5c, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1482,6 +1489,7 @@ GameObject:
   m_Component:
   - component: {fileID: 578118685}
   - component: {fileID: 578118686}
+  - component: {fileID: 578118687}
   m_Layer: 0
   m_Name: Asteroids
   m_TagString: Untagged
@@ -1514,7 +1522,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 578118684}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 555bfd3b368c1334a8ed6b289d56a698, type: 3}
   m_Name: 
@@ -1546,6 +1554,26 @@ MonoBehaviour:
   - {fileID: 1354041789}
   - {fileID: 968908179}
   - {fileID: 1477656982}
+--- !u!114 &578118687
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 578118684}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4f6f097a2a1829e44b115fe1fbce7fae, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  toInstantiate:
+  - {fileID: 1902498978}
+  - {fileID: 1354041789}
+  - {fileID: 968908179}
+  - {fileID: 1477656982}
+  fieldRadius: 0
+  nAsteroids: 0
+  scaleNoise: 1.5
 --- !u!1 &632520718 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 100048, guid: 605edd9a7ea592f49b223ffd08e11201, type: 3}
@@ -2522,6 +2550,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Mine (5)
       objectReference: {fileID: 0}
+    - target: {fileID: 8096939110837978621, guid: 80ebaa16aa1f15b4f9c0f38d8936fb5c, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8869218879164342087, guid: 80ebaa16aa1f15b4f9c0f38d8936fb5c, type: 3}
       propertyPath: m_LocalPosition.x
       value: 40.04
@@ -3182,6 +3214,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Mine (6)
       objectReference: {fileID: 0}
+    - target: {fileID: 8096939110837978621, guid: 80ebaa16aa1f15b4f9c0f38d8936fb5c, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8869218879164342087, guid: 80ebaa16aa1f15b4f9c0f38d8936fb5c, type: 3}
       propertyPath: m_LocalPosition.x
       value: 51.1
@@ -3691,6 +3727,10 @@ PrefabInstance:
     - target: {fileID: 8096939110837978621, guid: 80ebaa16aa1f15b4f9c0f38d8936fb5c, type: 3}
       propertyPath: m_Name
       value: Mine (3)
+      objectReference: {fileID: 0}
+    - target: {fileID: 8096939110837978621, guid: 80ebaa16aa1f15b4f9c0f38d8936fb5c, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8869218879164342087, guid: 80ebaa16aa1f15b4f9c0f38d8936fb5c, type: 3}
       propertyPath: m_LocalPosition.x
@@ -10203,6 +10243,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Mine (2)
       objectReference: {fileID: 0}
+    - target: {fileID: 8096939110837978621, guid: 80ebaa16aa1f15b4f9c0f38d8936fb5c, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8869218879164342087, guid: 80ebaa16aa1f15b4f9c0f38d8936fb5c, type: 3}
       propertyPath: m_LocalPosition.x
       value: 27.8
@@ -10690,7 +10734,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8869218879164342087, guid: 80ebaa16aa1f15b4f9c0f38d8936fb5c, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 35.71
+      value: 11.31
       objectReference: {fileID: 0}
     - target: {fileID: 8869218879164342087, guid: 80ebaa16aa1f15b4f9c0f38d8936fb5c, type: 3}
       propertyPath: m_LocalPosition.y
