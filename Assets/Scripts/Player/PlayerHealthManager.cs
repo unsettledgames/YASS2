@@ -8,11 +8,15 @@ public class PlayerHealthManager : MonoBehaviour
     
     [Header("Debug, don't set")]
     public float currentHealth;
+
     private Rigidbody physics;
+    private PlayerShipController controller;
     // Start is called before the first frame update
     void Start()
     {
         physics = GetComponent<Rigidbody>();
+        controller = GetComponent<PlayerShipController>();
+
         currentHealth = totHealth;
     }
 
@@ -22,11 +26,23 @@ public class PlayerHealthManager : MonoBehaviour
         
     }
 
-    public void TakeDamage(float damage, Vector3 damagePosition, Vector3 knockbackForce)
+    public void TakeDamage(float damage, Vector3 damagePosition, float knockbackMagnitude)
     {
-        Debug.Log("Called");
-
         currentHealth -= damage;
+
+        StartCoroutine(ApplyKnockback(knockbackMagnitude * (transform.position - damagePosition)));
+    }
+
+    private IEnumerator ApplyKnockback(Vector3 knockbackForce)
+    {
+        controller.TakeControl();
+
+        physics.AddForce(knockbackForce);
+        physics.AddTorque(knockbackForce * 100);
+
+        yield return new WaitForSeconds(0.5f);
+
+        controller.ReleaseControl();
     }
 
     public float GetCurrHealth()

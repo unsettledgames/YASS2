@@ -66,15 +66,10 @@ public class PlayerShipController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        // This is because when dodging, the ship is controlled externally
         if (!externallyControlled)
         {
             DodgeManagement();
-        }
 
-        if (!externallyControlled)
-        {
-            
             VelocityManagement();
             PointTowardsMouse();
 
@@ -215,11 +210,13 @@ public class PlayerShipController : MonoBehaviour
     }
     public void TakeControl(ArrayList parameters = null)
     {
+        physics.constraints = RigidbodyConstraints.None;
         externallyControlled = true;
     }
 
     public void ReleaseControl(ArrayList parameters = null)
     {
+        physics.constraints = RigidbodyConstraints.FreezeRotation;
         externallyControlled = false;
     }
 

@@ -5,7 +5,7 @@ using UnityEngine;
 public class DamageGiver : MonoBehaviour
 {
     public float damage;
-    public Vector3 knockbackForce;
+    public float knockbackMagnitude;
     public bool destroy = true;
 
     private bool isPlayer;
@@ -13,12 +13,6 @@ public class DamageGiver : MonoBehaviour
     void Start()
     {
         isPlayer = gameObject.layer == 8;
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 
     private void OnTriggerEnter(Collider other)
@@ -32,11 +26,10 @@ public class DamageGiver : MonoBehaviour
         }
         else if (other.tag.Contains("Player"))
         {
-            Debug.Log("Hit " + other.name);
             PlayerHealthManager phm = FrequentlyAccessed.Instance.player.GetComponent<PlayerHealthManager>();
             
             if (phm != null)
-                phm.TakeDamage(damage, transform.position, knockbackForce);
+                phm.TakeDamage(damage, transform.position, knockbackMagnitude);
         }
 
         if (destroy)
