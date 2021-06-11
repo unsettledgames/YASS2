@@ -71,3 +71,5 @@ Assets/Models/SpaceCraft2/Textures/diffuse.psd.meta
 Assets/Models/SpaceCraft2/Textures/occlusion.psd.meta
 Assets/Models/SpaceCraft2/Textures/specular.psd.meta
 Assets/Models/Planets/TestPlanet/snow_field_aerial_col_8k.png
+Assets/Models/BreakableAsteroids/Asteroids/zasteroids - backup.dae
+*.dae

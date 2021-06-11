@@ -20,7 +20,8 @@ public class SpawnedEnemy : OptimizedMonoBehaviour
         {
             try
             {
-                enemySpawner.Destroyed(spawnerIndex);
+                if (enemySpawner != null)
+                    enemySpawner.Destroyed(spawnerIndex);
             }
             catch (ArgumentOutOfRangeException e)
             {

@@ -1571,8 +1571,8 @@ MonoBehaviour:
   - {fileID: 1354041789}
   - {fileID: 968908179}
   - {fileID: 1477656982}
-  fieldRadius: 0
-  nAsteroids: 0
+  fieldRadius: 250
+  nAsteroids: 500
   scaleNoise: 1.5
 --- !u!1 &632520718 stripped
 GameObject:
