@@ -1225,7 +1225,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damage: 40
-  knockbackForce: {x: 0, y: 0, z: 0}
+  knockbackMagnitude: 0
   destroy: 0
 --- !u!114 &108507040371145520
 MonoBehaviour:
@@ -1239,6 +1239,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 494718586ffd106448bc3d78f0049915, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  explodeRadius: 15
+  explodeRadius: 30
   explodeTime: 2
-  lightSpeed: 5
+  lightSpeed: 10

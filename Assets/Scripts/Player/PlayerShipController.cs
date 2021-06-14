@@ -44,10 +44,13 @@ public class PlayerShipController : MonoBehaviour
 
     // Components
     private Rigidbody physics;
+    private PlayerHealthManager healthManager;
+    private PlayerEnergyManager energyManager;
 
     // State
     private bool isDodging = false;
     private bool externallyControlled = false;
+    private bool isSprinting = false;
 
     // Shooting stuff
     private float nextShootTime;
@@ -59,6 +62,8 @@ public class PlayerShipController : MonoBehaviour
     void Start()
     {
         physics = GetComponent<Rigidbody>();
+        energyManager = GetComponent<PlayerEnergyManager>();
+        healthManager = GetComponent<PlayerHealthManager>();
 
         nextShootTime = Time.time + shootRate;
     }
@@ -111,15 +116,21 @@ public class PlayerShipController : MonoBehaviour
         // Standard velocity
         Vector3 toSet = transform.forward * standardSpeedMagnitude;
 
-        if (InputManager.Instance.accelerationAmount > 0)
+        if (InputManager.Instance.accelerationAmount > 0 && energyManager.HasEnergy())
         {
+            isSprinting = true;
             // Adding acceleration
             toSet = Vector3.Lerp(toSet, toSet.normalized * maxSpeedMagnitude, InputManager.Instance.accelerationAmount);
         }
         else if (InputManager.Instance.accelerationAmount < 0)
         {
+            isSprinting = false;
             // Removing acceleration
             toSet = Vector3.Lerp(toSet.normalized * minSpeedMagnitude, toSet, 1 + InputManager.Instance.accelerationAmount);
+        }
+        else
+        {
+            isSprinting = false;
         }
 
         SetVelocity(toSet);
@@ -172,7 +183,6 @@ public class PlayerShipController : MonoBehaviour
     {
         Vector3 mousePosition = InputManager.Instance.relativeMousePosition;
         Vector3 rotation = ObjectPooler.Instance.GetVector3();
-        Vector3 localVelocity = physics.velocity;
 
         // Setting the new rotation 
         transform.rotation *= Quaternion.Euler(
@@ -188,6 +198,11 @@ public class PlayerShipController : MonoBehaviour
         model.transform.localEulerAngles = rotation;
 
         ObjectPooler.Instance.EnqueueVector3(rotation);
+    }
+
+    public bool IsSprinting()
+    {
+        return isSprinting;
     }
 
     public void SetVelocity(Vector3 toSet)

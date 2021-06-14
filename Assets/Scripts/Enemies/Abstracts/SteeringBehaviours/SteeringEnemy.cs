@@ -94,13 +94,14 @@ namespace SteeringBehaviours
         protected GameObject tempTargetObject;
         protected bool isFollowingPath;
 
-        protected SteeringBehaviour currentBehaviour;
-
+        private SteeringBehaviour currentBehaviour;
         private float startFollowMagnitude;
+        private PlayerShipController player;
 
         // Start is called before the first frame update
         protected void Start()
         {
+            player = FrequentlyAccessed.Instance.playerController;
             steeringOverriden = false;
             steeringPhysics = GetComponent<Rigidbody>();
 
@@ -140,7 +141,13 @@ namespace SteeringBehaviours
 
         protected void Update()
         {
-            float distance = Vector3.Distance(transform.position, target.transform.position);
+            float distance;
+
+            if (target != null)
+                distance = Vector3.Distance(transform.position, target.transform.position);
+            else
+                distance = Vector3.Distance(transform.position, player.transform.position);
+
             followForceMagnitude = startFollowMagnitude;
 
             // If I have to follow a path, I do so
