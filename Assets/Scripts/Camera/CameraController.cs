@@ -20,7 +20,7 @@ public class CameraController : MonoBehaviour
 
         transform.localEulerAngles = new Vector3(xRot, yRot, zRot);
 
-        if (InputManager.Instance.accelerationAmount > 0)
+        if (FrequentlyAccessed.Instance.playerController.IsSprinting())
         {
             ParticleSystem.EmissionModule emission = accelerationFX.emission;
             ParticleSystem.MinMaxCurve curve = emission.rateOverTime;

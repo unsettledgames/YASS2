@@ -30,6 +30,8 @@ namespace SteeringBehaviours
         public GameObject[] pathObjects;
         [Header("General properties")]
         public GameObject target;
+        public Vector3 targetOffset;
+        public float targetNoiseMagnitude;
         public bool rotate;
         [HideInInspector] public bool towardsTarget = false;
 
@@ -75,6 +77,8 @@ namespace SteeringBehaviours
 
         // Behaviour stuff
         protected Vector3 currentTarget;
+        protected Vector3 randomVector;
+
         protected bool steeringOverriden;
         protected Vector3 startVelocity;
         protected Vector3 startPosition;
@@ -101,6 +105,9 @@ namespace SteeringBehaviours
         // Start is called before the first frame update
         protected void Start()
         {
+            currentCollisionForce = Vector3.zero;
+            randomVector = Utility.GetRandomVector3(targetNoiseMagnitude);
+
             player = FrequentlyAccessed.Instance.playerController;
             steeringOverriden = false;
             steeringPhysics = GetComponent<Rigidbody>();
@@ -108,12 +115,11 @@ namespace SteeringBehaviours
             startVelocity = new Vector3(Random.Range(-1f, 1f), Random.Range(-1f, 1f), Random.Range(-1f, 1f));
             startPosition = transform.position;
 
-            currentTarget = target.transform.position;
+            currentTarget = target.transform.position + targetOffset + randomVector;
             targetPhysics = target.GetComponent<Rigidbody>();
 
             currentWanderDisplacement = (new Vector3(Random.Range(-1f, 1f), Random.Range(-1f, 1f), Random.Range(-1f, 1f)).normalized).normalized * wanderMaxSpeed;
             rotationAngle = new Vector3(Random.Range(-1f, 1f), Random.Range(-1f, 1f), Random.Range(-1f, 1f)).normalized * wanderForceMagnitude;
-            //wanderAngleChange = 1f;
 
             noCollisionLerp = 0;
             currentCollisionForce = Vector3.zero;
@@ -139,12 +145,17 @@ namespace SteeringBehaviours
                 steeringPhysics.velocity = startVelocity * wanderMaxSpeed;
         }
 
+        private Vector3 GetActualTarget()
+        {
+            return target.transform.TransformPoint(target.transform.position + targetOffset + randomVector);
+        }
+
         protected void Update()
         {
             float distance;
 
             if (target != null)
-                distance = Vector3.Distance(transform.position, target.transform.position);
+                distance = Vector3.Distance(transform.position, GetActualTarget());
             else
                 distance = Vector3.Distance(transform.position, player.transform.position);
 
@@ -191,7 +202,7 @@ namespace SteeringBehaviours
                             {
                                 allowFollow = false;
                             }
-                            currentVelocity = Seek(target.transform.position, followMaxSpeed, followForceMagnitude, targetPhysics.velocity, followForecastPrecision);
+                            currentVelocity = Seek(GetActualTarget(), followMaxSpeed, followForceMagnitude, targetPhysics.velocity, followForecastPrecision);
                             // Taking distance in account
                             currentVelocity = Vector3.Lerp(currentVelocity, Vector3.zero, followDistance / distance);
                         }
@@ -206,7 +217,7 @@ namespace SteeringBehaviours
                     case SteeringBehaviour.Escape:
                         if (allowEscape)
                         {
-                            currentVelocity = Escape(target.transform.position, escapeMaxSpeed, escapeForceMagnitude, targetPhysics.velocity);
+                            currentVelocity = Escape(GetActualTarget(), escapeMaxSpeed, escapeForceMagnitude, targetPhysics.velocity);
                             // Taking distance in account
                             currentVelocity = Vector3.Lerp(currentVelocity, Vector3.zero, distance / escapeMinDistance);
                         }
@@ -287,21 +298,26 @@ namespace SteeringBehaviours
                 GameObject currObject = copyList[i].gameObject;
                 float currRadius = copyList[i].radius;
 
-                currentCollisionForce = transform.position + transform.forward * collisionCheckDistance - currObject.transform.position;
-                // Normalize it and scale it by the force magnitude
-                currentCollisionForce = currentCollisionForce.normalized * collisionAvoidanceMagnitude *
-                // Increase the force depending on how near the enemy is to the object to avoid
-                ((collisionCheckDistance / 2) / (Mathf.Abs(currRadius -
-                (Vector3.Distance(transform.position, currObject.transform.position)))));
-
-                ret += currentCollisionForce;
-
-                // If the contribute of the collision vector is smol, I've avoided the obstacle and I can remove it from the list
-                if (Vector3.Distance(currentCollisionForce, Vector3.zero) < 0.5f)
+                if (currObject != null)
                 {
-                    objectsToAvoid.Remove(copyList[i]);
+                    currentCollisionForce = transform.position + transform.forward * collisionCheckDistance - currObject.transform.position;
+                    // Normalize it and scale it by the force magnitude
+                    currentCollisionForce = currentCollisionForce.normalized * collisionAvoidanceMagnitude *
+                    // Increase the force depending on how near the enemy is to the object to avoid
+                    ((collisionCheckDistance / 2) / (Mathf.Abs(currRadius -
+                    (Vector3.Distance(transform.position, currObject.transform.position)))));
+
+                    ret += currentCollisionForce;
+
+                    // If the contribute of the collision vector is smol, I've avoided the obstacle and I can remove it from the list
+                    if (Vector3.Distance(currentCollisionForce, Vector3.zero) < 0.5f)
+                    {
+                        objectsToAvoid.Remove(copyList[i]);
+                    }
                 }
             }
+
+            Debug.Log("collision force: " + currentCollisionForce);
 
             return currentCollisionForce;
         }

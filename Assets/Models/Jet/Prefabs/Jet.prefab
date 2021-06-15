@@ -1746,9 +1746,14 @@ GameObject:
   - component: {fileID: 400048}
   - component: {fileID: 554828480}
   - component: {fileID: 554828478}
+  - component: {fileID: 554828482}
+  - component: {fileID: 554828483}
+  - component: {fileID: 554828484}
+  - component: {fileID: 5493651484426321037}
+  - component: {fileID: 3804898813984450976}
   m_Layer: 0
   m_Name: Jet
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1762,7 +1767,7 @@ Transform:
   m_GameObject: {fileID: 100048}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.1, y: 0.1, z: 0.1}
+  m_LocalScale: {x: 0.07, y: 0.07, z: 0.07}
   m_Children:
   - {fileID: 400046}
   m_Father: {fileID: 0}
@@ -1796,12 +1801,112 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4417b038a5b36bb429e5d2ae936ea71e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  pathObjects: []
   target: {fileID: 0}
-  rotate: 0
+  targetOffset: {x: -4, y: 4, z: 0}
+  targetNoiseMagnitude: 2
+  rotate: 1
+  towardsTarget: 1
   allowStatic: 0
   allowFollow: 1
-  forceMagnitude: 20
-  maxSpeed: 15
+  allowEscape: 1
+  allowWander: 1
+  avoidCollisions: 1
+  collisionCheckDistance: 20
+  collisionTagsToAvoid: 
+  collisionAvoidanceMagnitude: 1
+  collisionLayerMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  staticVelocity: {x: -5, y: 0, z: 0}
+  followForceMagnitude: 0.8
+  followMaxSpeed: 20
+  followDistance: 10
+  followForecastTarget: 1
+  followForecastPrecision: 0.5
+  escapeForceMagnitude: 15
+  escapeMaxSpeed: 20
+  escapeMinDistance: 20
+  escapeForecastTarget: 1
+  escapeForecastPrecision: 0.2
+  sphereDistance: 5
+  sphereRadius: 5
+  wanderMaxSpeed: 8
+  wanderForceMagnitude: 0.2
+--- !u!114 &554828482
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 100048}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8f9c42672c6452f40b6d7acc32e747b1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHealth: 80
+  canFracture: 0
+  deathExplosion: {fileID: 100000, guid: 8e02e06584f51ab42986fd44c73d976e, type: 3}
+--- !u!114 &554828483
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 100048}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5fea29bb7c508c244a1f805a5fd3fc4d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  outlineChildren: 1
+  outlineMode: 0
+  outlineColor: {r: 1, g: 0.11792451, b: 0.11792451, a: 1}
+  outlineWidth: 0
+  precomputeOutline: 0
+  bakeKeys: []
+  bakeValues: []
+--- !u!114 &554828484
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 100048}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: affabaa5371c47147a5cc4aad70dc5ad, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!136 &5493651484426321037
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 100048}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 4.40645
+  m_Height: 18.845879
+  m_Direction: 1
+  m_Center: {x: -0.17954665, y: -0.42092118, z: 5.15}
+--- !u!136 &3804898813984450976
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 100048}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 4.65
+  m_Height: 50.73
+  m_Direction: 0
+  m_Center: {x: 0.5316147, y: 6.19, z: -2.55}
 --- !u!1 &100050
 GameObject:
   m_ObjectHideFlags: 0
