@@ -169,10 +169,20 @@ public class PlayerShipController : MonoBehaviour
             // Autoaim if the player is hovering an enemy
             if (currentTarget != null)
             {
+                Rigidbody targetPhysics = currentTarget.GetComponent<Rigidbody>();
+                Vector3 velocity = Vector3.zero;
+
+                if (targetPhysics != null)
+                    velocity = targetPhysics.velocity.normalized * autoAimTween;
+
                 Vector3 toLookAt = currentTarget.transform.position;
 
-                instantiated.transform.LookAt(toLookAt);
-                instantiated2.transform.LookAt(toLookAt);
+                Debug.Log("Velocity: " + velocity);
+                Debug.DrawLine(transform.position, toLookAt + velocity, Color.red);
+                Debug.DrawLine(transform.position, toLookAt, Color.green);
+
+                instantiated.transform.LookAt(toLookAt + velocity);
+                instantiated2.transform.LookAt(toLookAt + velocity);
             }
 
             nextShootTime = Time.time + shootRate;
