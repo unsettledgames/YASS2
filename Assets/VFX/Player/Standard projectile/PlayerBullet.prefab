@@ -14516,7 +14516,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 605a456cfc02f6b499a64717539a27e8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 75
+  speed: 100
   hitOffset: 0.1
   UseFirePointRotation: 0
   hit: {fileID: 8148952023431956616, guid: ca828472661341e40ba4cc3e6406c423, type: 3}
@@ -14705,6 +14705,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damage: 5
+  knockbackMagnitude: 0
+  destroy: 1
 --- !u!114 &-5955084620239339571
 MonoBehaviour:
   m_ObjectHideFlags: 0

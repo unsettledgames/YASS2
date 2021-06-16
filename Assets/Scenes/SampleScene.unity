@@ -1682,7 +1682,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 578118684}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4f6f097a2a1829e44b115fe1fbce7fae, type: 3}
   m_Name: 
@@ -10560,61 +10560,17 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 400048, guid: 605edd9a7ea592f49b223ffd08e11201, type: 3}
-      propertyPath: m_LocalScale.x
-      value: 0.09
-      objectReference: {fileID: 0}
-    - target: {fileID: 400048, guid: 605edd9a7ea592f49b223ffd08e11201, type: 3}
-      propertyPath: m_LocalScale.y
-      value: 0.09
-      objectReference: {fileID: 0}
-    - target: {fileID: 400048, guid: 605edd9a7ea592f49b223ffd08e11201, type: 3}
-      propertyPath: m_LocalScale.z
-      value: 0.09
-      objectReference: {fileID: 0}
     - target: {fileID: 554828478, guid: 605edd9a7ea592f49b223ffd08e11201, type: 3}
       propertyPath: target
       value: 
       objectReference: {fileID: 9218115934214405162}
     - target: {fileID: 554828478, guid: 605edd9a7ea592f49b223ffd08e11201, type: 3}
-      propertyPath: targetOffset.x
-      value: -4
-      objectReference: {fileID: 0}
-    - target: {fileID: 554828478, guid: 605edd9a7ea592f49b223ffd08e11201, type: 3}
-      propertyPath: targetOffset.y
-      value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 554828478, guid: 605edd9a7ea592f49b223ffd08e11201, type: 3}
-      propertyPath: targetNoiseMagnitude
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 554828478, guid: 605edd9a7ea592f49b223ffd08e11201, type: 3}
-      propertyPath: allowWander
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 554828478, guid: 605edd9a7ea592f49b223ffd08e11201, type: 3}
-      propertyPath: allowEscape
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 554828478, guid: 605edd9a7ea592f49b223ffd08e11201, type: 3}
-      propertyPath: avoidCollisions
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 554828478, guid: 605edd9a7ea592f49b223ffd08e11201, type: 3}
-      propertyPath: targetOffset.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 554828478, guid: 605edd9a7ea592f49b223ffd08e11201, type: 3}
-      propertyPath: collisionTagsToAvoid
-      value: Player
-      objectReference: {fileID: 0}
-    - target: {fileID: 554828478, guid: 605edd9a7ea592f49b223ffd08e11201, type: 3}
-      propertyPath: collisionCheckDistance
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 554828478, guid: 605edd9a7ea592f49b223ffd08e11201, type: 3}
       propertyPath: followMaxSpeed
-      value: 30
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 659887272412366159, guid: 605edd9a7ea592f49b223ffd08e11201, type: 3}
+      propertyPath: m_IsTrigger
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 605edd9a7ea592f49b223ffd08e11201, type: 3}

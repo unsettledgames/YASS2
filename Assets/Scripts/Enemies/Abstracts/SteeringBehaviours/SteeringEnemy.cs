@@ -157,7 +157,10 @@ namespace SteeringBehaviours
             if (target != null)
                 distance = Vector3.Distance(transform.position, GetActualTarget());
             else
+            {
+                Debug.Log("Distance from player");
                 distance = Vector3.Distance(transform.position, player.transform.position);
+            }
 
             followForceMagnitude = startFollowMagnitude;
 
@@ -269,7 +272,7 @@ namespace SteeringBehaviours
 
         /**
          * Computes the force necessary to push the object away from the nearest obstacle
-         */ 
+         */
         private Vector3 AvoidCollisions()
         {
             // Firing a raycast
@@ -280,8 +283,6 @@ namespace SteeringBehaviours
 
             if (hitSomething)
             {
-                if (hit.collider.name.Contains("Player") && this.name.Contains("Leader"))
-                    Debug.Log("Hit player");
                 // Creating an object containing info about the thing to avoid
                 CollisionObject toAdd = new CollisionObject(
                         hit.collider.gameObject,
@@ -296,10 +297,11 @@ namespace SteeringBehaviours
             for (int i = 0; i < copyList.Count; i++)
             {
                 GameObject currObject = copyList[i].gameObject;
-                float currRadius = copyList[i].radius;
 
                 if (currObject != null)
                 {
+                    float currRadius = copyList[i].radius;
+
                     currentCollisionForce = transform.position + transform.forward * collisionCheckDistance - currObject.transform.position;
                     // Normalize it and scale it by the force magnitude
                     currentCollisionForce = currentCollisionForce.normalized * collisionAvoidanceMagnitude *
@@ -317,14 +319,12 @@ namespace SteeringBehaviours
                 }
             }
 
-            Debug.Log("collision force: " + currentCollisionForce);
-
             return currentCollisionForce;
         }
 
         /**
          * Computes the velocity necessary to make the object randomly wander around
-         */ 
+         */
         private Vector3 Wander()
         {
             Vector3 ret;

@@ -140,11 +140,11 @@ public class PlayerShipController : MonoBehaviour
     {
         Vector3 mouseWorldPos = FrequentlyAccessed.Instance.cameraComponent.ScreenToWorldPoint(InputManager.Instance.globalMousePosition);
         RaycastHit aimHit;
-        bool hitObject = Physics.Raycast(mouseWorldPos, transform.forward, out aimHit, Mathf.Infinity, ~(1 << 8));
+        bool hitObject = Physics.Raycast(mouseWorldPos, transform.forward, out aimHit, Mathf.Infinity, LayerMask.GetMask("AutoAim"));
 
-        if (hitObject && aimHit.collider.tag.Contains("Enemy"))
+        if (hitObject)
         {
-            currentTarget = aimHit.collider.gameObject;
+            currentTarget = aimHit.collider.transform.parent.gameObject;
 
             if (prevTarget == null)
             {
