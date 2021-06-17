@@ -1751,6 +1751,7 @@ GameObject:
   - component: {fileID: 554828484}
   - component: {fileID: 5493651484426321037}
   - component: {fileID: 3804898813984450976}
+  - component: {fileID: 1989800787893663556}
   m_Layer: 11
   m_Name: Jet
   m_TagString: Enemy
@@ -1804,8 +1805,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   pathObjects: []
   target: {fileID: 0}
-  targetOffset: {x: -4, y: 4, z: 0}
-  targetNoiseMagnitude: 1
+  targetOffset: {x: 0, y: 4, z: 4}
+  targetNoiseMagnitude: 0.5
   rotate: 1
   towardsTarget: 1
   allowStatic: 0
@@ -1908,6 +1909,18 @@ CapsuleCollider:
   m_Height: 50.73
   m_Direction: 0
   m_Center: {x: 0.5316147, y: 6.19, z: -2.55}
+--- !u!114 &1989800787893663556
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 100048}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: df5dd60620cd8bd4880319b7474efe7c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &100050
 GameObject:
   m_ObjectHideFlags: 0

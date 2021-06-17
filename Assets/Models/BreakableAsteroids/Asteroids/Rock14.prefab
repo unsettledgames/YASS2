@@ -17,7 +17,7 @@ GameObject:
   - component: {fileID: -7547978821668351213}
   - component: {fileID: -1187166924140641726}
   - component: {fileID: -5022920657287738651}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Rock14
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -143,6 +143,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 59592e431eb8faa468223b1f009a7a00, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  colliderActivationDistance: 30
   maxRotationMagnitude: 1
   maxVelocityMagnitude: 0.5
 --- !u!54 &-1187166924140641726

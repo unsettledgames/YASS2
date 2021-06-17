@@ -18,7 +18,7 @@ GameObject:
   - component: {fileID: -3768617841749835088}
   - component: {fileID: -7828213937622903483}
   - component: {fileID: -5014526667797860572}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Rock3
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -50304,7 +50304,7 @@ GameObject:
   - component: {fileID: 2974846060984125911}
   - component: {fileID: 2698495636513494956}
   - component: {fileID: 1111441218776930092}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: LOD
   m_TagString: Untagged
   m_Icon: {fileID: 0}

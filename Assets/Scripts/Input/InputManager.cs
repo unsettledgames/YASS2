@@ -61,6 +61,7 @@ public class InputManager : MonoBehaviour
         shootState = Input.GetButton("Fire1");
 
         globalMousePosition = Input.mousePosition;
+        globalMousePosition.z = 0;
 
         // Getting mouse position relatively to camera
         relativeMousePosition.x = (Input.mousePosition.x - screenCenter.x) / screenCenter.x;

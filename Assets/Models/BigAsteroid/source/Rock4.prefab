@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 4904027211244476993}
   - component: {fileID: 9054168364949874970}
   - component: {fileID: 1812480705232507317}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: LOD
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -99,7 +99,7 @@ GameObject:
   - component: {fileID: 1944836076832098191}
   - component: {fileID: 795625243949558063}
   - component: {fileID: 6525722451824829980}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Rock4
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -113,7 +113,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5088785953716078452}
-  m_LocalRotation: {x: 0.0000000814605, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -227,8 +227,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   colliderActivationDistance: 30
-  maxRotationMagnitude: 1
-  maxVelocityMagnitude: 0.5
+  maxRotationMagnitude: 50
+  maxVelocityMagnitude: 50
 --- !u!54 &1944836076832098191
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -37374,17 +37374,16 @@ LODGroup:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5088785953716078452}
   serializedVersion: 2
-  m_LocalReferencePoint: {x: 0.17600608, y: -0.022817016, z: 0.005756974}
+  m_LocalReferencePoint: {x: 0.17600608, y: -0.02281797, z: 0.005756974}
   m_Size: 3.633606
   m_FadeMode: 1
-  m_AnimateCrossFading: 1
+  m_AnimateCrossFading: 0
   m_LastLODIsBillboard: 0
   m_LODs:
   - screenRelativeHeight: 0.6
-    fadeTransitionWidth: 0
+    fadeTransitionWidth: 0.5
     renderers:
     - renderer: {fileID: 2441583916494810857}
-    - renderer: {fileID: 1812480705232507317}
   - screenRelativeHeight: 0.055879258
     fadeTransitionWidth: 0
     renderers:

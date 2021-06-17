@@ -34,6 +34,7 @@ public class PlayerShipController : MonoBehaviour
     [Header("Shooting management")]
     public float shootRate = 0.15f;
     public float autoAimDistance = 50f;
+    public float autoAimThreshold = 5f;
     public float autoAimTween = 0.5f;
 
     public GameObject standardBullet;
@@ -56,6 +57,9 @@ public class PlayerShipController : MonoBehaviour
     private float nextShootTime;
     private GameObject currentTarget;
     private GameObject prevTarget;
+
+    // Targettable enemies
+    private List<GameObject> targettables;
     
 
     // Start is called before the first frame update
@@ -65,6 +69,7 @@ public class PlayerShipController : MonoBehaviour
         energyManager = GetComponent<PlayerEnergyManager>();
         healthManager = GetComponent<PlayerHealthManager>();
 
+        targettables = new List<GameObject>();
         nextShootTime = Time.time + shootRate;
     }
 
@@ -140,15 +145,19 @@ public class PlayerShipController : MonoBehaviour
     {
         Vector3 mouseWorldPos = FrequentlyAccessed.Instance.cameraComponent.ScreenToWorldPoint(InputManager.Instance.globalMousePosition);
         RaycastHit aimHit;
-        bool hitObject = Physics.Raycast(mouseWorldPos, transform.forward, out aimHit, Mathf.Infinity, LayerMask.GetMask("AutoAim"));
+        bool hitObject = Physics.Raycast(mouseWorldPos, FrequentlyAccessed.Instance.cameraComponent.transform.forward, 
+            out aimHit, Mathf.Infinity, LayerMask.GetMask("AutoAim", "Enemies"));
 
         if (hitObject)
         {
-            currentTarget = aimHit.collider.transform.parent.gameObject;
+            if (aimHit.collider.gameObject.layer == 12)
+                currentTarget = aimHit.collider.transform.parent.gameObject;
+            else
+                currentTarget = aimHit.collider.gameObject;
 
             if (prevTarget == null)
             {
-                currentTarget.GetComponent<Outline>().OutlineWidth = Consts.enemyOutlineWidth;
+                currentTarget.GetComponent<Outline>().OutlineWidth = Consts.enemyOutlineWidth * 5;
             }
         }
         else
@@ -178,8 +187,6 @@ public class PlayerShipController : MonoBehaviour
                 Vector3 toLookAt = currentTarget.transform.position;
 
                 Debug.Log("Velocity: " + velocity);
-                Debug.DrawLine(transform.position, toLookAt + velocity, Color.red);
-                Debug.DrawLine(transform.position, toLookAt, Color.green);
 
                 instantiated.transform.LookAt(toLookAt + velocity);
                 instantiated2.transform.LookAt(toLookAt + velocity);
@@ -188,7 +195,41 @@ public class PlayerShipController : MonoBehaviour
             nextShootTime = Time.time + shootRate;
         }
     }
+    /*
+    private GameObject GetAutoAimEnemy()
+    {
+        Camera cameraController = FrequentlyAccessed.Instance.cameraComponent;
+        GameObject ret = null;
 
+        Vector3 mousePos = InputManager.Instance.globalMousePosition;
+        Vector3 inputPos = Input.mousePosition;
+
+        float minDistance = Mathf.Infinity;
+        inputPos.z = 0;
+
+        for (int i=0; i<targettables.Count; i++)
+        {
+            Vector3 objectPos = cameraController.WorldToScreenPoint(targettables[i].transform.position);
+            objectPos.z = 0;
+            inputPos.z = 0;
+            float distance = Vector3.Distance(objectPos, inputPos);
+
+            if (distance < minDistance && distance < autoAimThreshold && 
+                Vector3.Distance(transform.position, targettables[i].transform.position) < autoAimDistance)
+            {
+                minDistance = distance;
+                ret = targettables[i];
+            }
+        }
+
+        if (ret != null)
+            Debug.Log("Got: " + ret.name);
+        else
+            Debug.Log("Null");
+
+        return ret;
+    }
+    */
     private void PointTowardsMouse()
     {
         Vector3 mousePosition = InputManager.Instance.relativeMousePosition;
@@ -244,6 +285,18 @@ public class PlayerShipController : MonoBehaviour
         physics.constraints = RigidbodyConstraints.FreezeRotation;
         externallyControlled = false;
     }
+
+    public void AddTargettable(GameObject toAdd)
+    {
+        if (!targettables.Contains(toAdd))
+            targettables.Add(toAdd);
+    }
+
+    public void RemoveTargettable(GameObject toRemove)
+    {
+        if (targettables.Contains(toRemove))
+            targettables.Remove(toRemove);
+    }    
 
     private void UpdateModelRotation(Vector3 rotation)
     {
