@@ -20,8 +20,6 @@ public class Targettable : MonoBehaviour
     {
         Vector3 screenPos = camera.WorldToScreenPoint(transform.position);
 
-        Debug.Log("Obj: " + this.name + ", pos: " + screenPos);
-
         if (screenPos.x >= 0 && screenPos.y >= 0)
         {
             if (!added)

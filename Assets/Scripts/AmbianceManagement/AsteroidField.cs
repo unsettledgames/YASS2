@@ -103,8 +103,6 @@ public class AsteroidField : MonoBehaviour
             asteroid.transform.localScale *= scaleMul;
         }
 
-        Debug.Log("finished");
-
         yield return null;
     }
 
