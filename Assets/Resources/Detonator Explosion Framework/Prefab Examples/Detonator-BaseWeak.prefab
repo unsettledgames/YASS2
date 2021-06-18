@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 11400000}
   - component: {fileID: 1655062696911243894}
   m_Layer: 0
-  m_Name: Detonator-Base
+  m_Name: Detonator-BaseWeak
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -101,7 +101,7 @@ MonoBehaviour:
   startVelocity: {x: 0, y: 0, z: 0}
   velocity: {x: 0, y: 0, z: 0}
   detailThreshold: 0
-  radius: 5
-  power: 4000
+  radius: 2
+  power: 100
   fireObject: {fileID: 0}
   fireObjectLife: 0

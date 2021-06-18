@@ -9,7 +9,9 @@ public class EnemyHealthManager : OptimizedMonoBehaviour
     public bool canFracture;
     public GameObject deathExplosion;
 
-    private float currentHealth;
+    [Header("DEBUG, DON'T EDIT")]
+    public float currentHealth;
+
     // Start is called before the first frame update
     void Start()
     {

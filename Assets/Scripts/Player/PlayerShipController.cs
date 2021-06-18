@@ -251,6 +251,13 @@ public class PlayerShipController : MonoBehaviour
         ObjectPooler.Instance.EnqueueVector3(rotation);
     }
 
+    public Vector3 GetCurrentTargetPosition()
+    {
+        if (currentTarget == null)
+            return Vector3.zero;
+        return FrequentlyAccessed.Instance.cameraComponent.WorldToScreenPoint(currentTarget.transform.position);
+    }
+
     public bool IsSprinting()
     {
         return isSprinting;
