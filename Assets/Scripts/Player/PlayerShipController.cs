@@ -293,6 +293,18 @@ public class PlayerShipController : MonoBehaviour
         externallyControlled = false;
     }
 
+    public void SetExternalVelocity(Vector3 vel)
+    {
+        if (externallyControlled)
+            SetVelocity(vel);
+    }
+
+    public void ExternalLookAt(Vector3 toLookAt)
+    {
+        if (externallyControlled)
+            transform.LookAt(toLookAt);
+    }
+
     public void AddTargettable(GameObject toAdd)
     {
         if (!targettables.Contains(toAdd))

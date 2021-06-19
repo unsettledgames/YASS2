@@ -1798,7 +1798,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 578118684}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4f6f097a2a1829e44b115fe1fbce7fae, type: 3}
   m_Name: 
@@ -2359,10 +2359,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   minFresnel: 0
   maxFresnel: 1
-  fresnelDistance: 80
-  slowDownDistance: 90
-  stopDistance: 100
+  fresnelDistance: 90
+  slowDownDistance: 100
+  stopDistance: 110
   radius: 120
+  turnDuration: 2
+  turnSpeed: 3
 --- !u!1 &829295767
 GameObject:
   m_ObjectHideFlags: 0
