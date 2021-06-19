@@ -17,6 +17,7 @@ public class LevelBoundaries : MonoBehaviour
     [Header("U turn data")]
     public float turnDuration = 2f;
     public float turnSpeed = 1f;
+    public float turnVelocityDuration = 1f;
 
     private PlayerShipController player;
     private Material fresnelMaterial;
@@ -25,7 +26,8 @@ public class LevelBoundaries : MonoBehaviour
 
     // State
     private bool turning = false;
-    private float turnEndTime;
+    private float turnEndTime = -1;
+    private float velocityEndTime = -1;
     // Start is called before the first frame update
     void Start()
     {
@@ -41,13 +43,14 @@ public class LevelBoundaries : MonoBehaviour
     void LateUpdate()
     {
         float distance = Vector3.Distance(transform.position, player.transform.position);
-        float dotProduct = 0;
-        Vector3 normal = Vector3.zero;
+        float dotProduct;
+        float t;
+        Vector3 normal;
 
         if (distance > fresnelDistance)
         {
             // Fresnel intensity depends on player distance from the boundaries
-            float t = (distance - fresnelDistance) / (stopDistance - fresnelDistance);
+            t = (distance - fresnelDistance) / (stopDistance - fresnelDistance);
             // And it depends on the dot product between player.forward and the normal
             RaycastHit hit;
             bool hitSphere = Physics.Raycast(player.transform.position, player.transform.forward, out hit,
@@ -65,38 +68,43 @@ public class LevelBoundaries : MonoBehaviour
 
             // Start showing fresnel
             fresnelMaterial.SetFloat("_FresnelPower", Mathf.Lerp(minFresnel, maxFresnel, t));
+        }
 
-            // Slow down the ship depending on the distance and the normal (or just make an U turn after a while?)
-            if (distance > slowDownDistance && !turning)
+        // Slow down the ship depending on the distance and the normal (or just make an U turn after a while?)
+        if (distance > slowDownDistance && !turning)
+        {
+            t = 1 - (distance - slowDownDistance) / (stopDistance - slowDownDistance);
+            playerPhysics.velocity *= t * Mathf.Sign(t);
+
+            // If the player is too near, u turn
+            if (t < 0.1)
             {
-                t = 1 - (distance - slowDownDistance) / (stopDistance - slowDownDistance);
-                playerPhysics.velocity *= t * Mathf.Sign(t);
-
-                // If the player is too near, u turn
-                if (t < 0.1)
-                {
-                    turning = true;
-                    turnEndTime = Time.time + turnDuration;
-                    player.TakeControl();
-                }
-
+                turning = true;
+                turnEndTime = Time.time + turnDuration;
+                player.TakeControl();
             }
-            else if (Time.time <= turnEndTime)
-            {
-                Vector3 dir = Vector3.zero;
+        }
+        else if (Time.time <= turnEndTime)
+        {
+            Debug.DrawRay(player.transform.position + player.transform.forward * 2, player.transform.up, Color.blue);
+            Vector3 dir = Vector3.zero;
 
-                dir.x = 0;
-                dir.y = 1;
-                dir.z = 0;
+            dir.x = 0;
+            dir.y = 1;
+            dir.z = 0;
 
-                player.SetExternalVelocity(player.transform.forward.normalized * player.standardSpeedMagnitude);
-                player.ExternalLookAt(player.transform.position + player.transform.forward + player.transform.up * turnSpeed * Time.deltaTime);
-            }
-            else
-            {
-                turning = false;
-                player.ReleaseControl();
-            }
+            player.SetExternalVelocity(player.transform.forward.normalized * player.standardSpeedMagnitude);
+            player.transform.rotation *= Quaternion.Euler(Vector3.right * Time.deltaTime * turnSpeed);
+        }
+        else if (turning && (Time.time - turnEndTime) < 0.1f && Time.time > velocityEndTime)
+        {
+            velocityEndTime = Time.time + turnVelocityDuration;
+        }
+        else if (turning && Time.time >= velocityEndTime)
+        {
+            turning = false;
+            Debug.Log("END OF U TURN");
+            player.ReleaseControl();
         }
     }
 
