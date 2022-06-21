@@ -1,0 +1,1 @@
+All rights reserved except for the assets that specify a different license. You cannot redistribute this project, you cannot use any parts of it in any application that doesn't solely consist in running the project. To be clear, you can only download the project to run it and see the code in action.
